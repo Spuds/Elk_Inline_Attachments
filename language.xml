@@ -103,30 +103,30 @@ $helptxt['ILA_InLineAttachments_help'] = '<b>Add an inline attachment</b><br />
 		
 //Begin ILA in line attachment changes
 $txt['mods_cat_modifications_ila'] = 'In Line Attachments';
-$txt['ila_desc'] = 'Здесь можно изменить установки модификации In Line Attachment';
-$txt['ila_enabled'] = '(ILA) Активировать мод In Line Attachment';
-$txt['ila_alwaysfullsize'] = '(ILA) Все вложенные изображения ВСЕГДА отображать в полном размере';
+$txt['ila_desc'] = 'Р—РґРµСЃСЊ РјРѕР¶РЅРѕ РёР·РјРµРЅРёС‚СЊ СѓСЃС‚Р°РЅРѕРІРєРё РјРѕРґРёС„РёРєР°С†РёРё In Line Attachment';
+$txt['ila_enabled'] = '(ILA) РђРєС‚РёРІРёСЂРѕРІР°С‚СЊ РјРѕРґ In Line Attachment';
+$txt['ila_alwaysfullsize'] = '(ILA) Р’СЃРµ РІР»РѕР¶РµРЅРЅС‹Рµ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ Р’РЎР•Р“Р”Рђ РѕС‚РѕР±СЂР°Р¶Р°С‚СЊ РІ РїРѕР»РЅРѕРј СЂР°Р·РјРµСЂРµ';
 $txt['ila_basicmenu'] = '(ILA) Only show basic ILA menu';
-$txt['ila_insert'] = 'Вставить вложение';
-$txt['ila_title'] = 'Миниатюра в конце сообщения (по умолчанию) ';
-$txt['ila_option1'] = 'Миниатюра внутри сообщения';
-$txt['ila_option2'] = 'Полноразмерное изображение в сообщении';
-$txt['ila_option3'] = 'Текстовая ссылка в сообщении';
-$txt['ila_option4'] = 'Короткая текстовая ссылка в сообщении';
-$txt['ila_nopermission'] = ' [ Вы не авторизованы для просмотра вложений ] ';
-$txt['ila_invalid'] = ' [ Вложение повреждено или не существует ] ';
-$txt['ila_disabled'] = ' [ Вложения отключены ] ';
-$txt['ila_insert_next'] = ' в сообщение';
-$txt['ila_attachment_missing'] = ' [ Указанное вложение недоступно ]';
-$txt['ila_thereare'] = 'Только';
-$txt['ila_attachment'] = 'вложений';
-$txt['ila_forbidden_for_guest'] = ' [ Гостям не разрешен просмотр вложений ] ';
-$txt['ila_quote_link'] = ' (Ссылка на вложение) ';
-$txt['ila_quote_nolink'] = ' (Вложение) ';
-$txt['ila_none'] = 'как миниатюра';
-$txt['ila_img'] = 'как полноразмерное изображение';
-$txt['ila_url'] = 'как ссылка';
-$txt['ila_mini'] = 'как короткая ссылка';
+$txt['ila_insert'] = 'Р’СЃС‚Р°РІРёС‚СЊ РІР»РѕР¶РµРЅРёРµ';
+$txt['ila_title'] = 'РњРёРЅРёР°С‚СЋСЂР° РІ РєРѕРЅС†Рµ СЃРѕРѕР±С‰РµРЅРёСЏ (РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ) ';
+$txt['ila_option1'] = 'РњРёРЅРёР°С‚СЋСЂР° РІРЅСѓС‚СЂРё СЃРѕРѕР±С‰РµРЅРёСЏ';
+$txt['ila_option2'] = 'РџРѕР»РЅРѕСЂР°Р·РјРµСЂРЅРѕРµ РёР·РѕР±СЂР°Р¶РµРЅРёРµ РІ СЃРѕРѕР±С‰РµРЅРёРё';
+$txt['ila_option3'] = 'РўРµРєСЃС‚РѕРІР°СЏ СЃСЃС‹Р»РєР° РІ СЃРѕРѕР±С‰РµРЅРёРё';
+$txt['ila_option4'] = 'РљРѕСЂРѕС‚РєР°СЏ С‚РµРєСЃС‚РѕРІР°СЏ СЃСЃС‹Р»РєР° РІ СЃРѕРѕР±С‰РµРЅРёРё';
+$txt['ila_nopermission'] = ' [ Р’С‹ РЅРµ Р°РІС‚РѕСЂРёР·РѕРІР°РЅС‹ РґР»СЏ РїСЂРѕСЃРјРѕС‚СЂР° РІР»РѕР¶РµРЅРёР№ ] ';
+$txt['ila_invalid'] = ' [ Р’Р»РѕР¶РµРЅРёРµ РїРѕРІСЂРµР¶РґРµРЅРѕ РёР»Рё РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚ ] ';
+$txt['ila_disabled'] = ' [ Р’Р»РѕР¶РµРЅРёСЏ РѕС‚РєР»СЋС‡РµРЅС‹ ] ';
+$txt['ila_insert_next'] = ' РІ СЃРѕРѕР±С‰РµРЅРёРµ';
+$txt['ila_attachment_missing'] = ' [ РЈРєР°Р·Р°РЅРЅРѕРµ РІР»РѕР¶РµРЅРёРµ РЅРµРґРѕСЃС‚СѓРїРЅРѕ ]';
+$txt['ila_thereare'] = 'РўРѕР»СЊРєРѕ';
+$txt['ila_attachment'] = 'РІР»РѕР¶РµРЅРёР№';
+$txt['ila_forbidden_for_guest'] = ' [ Р“РѕСЃС‚СЏРј РЅРµ СЂР°Р·СЂРµС€РµРЅ РїСЂРѕСЃРјРѕС‚СЂ РІР»РѕР¶РµРЅРёР№ ] ';
+$txt['ila_quote_link'] = ' (РЎСЃС‹Р»РєР° РЅР° РІР»РѕР¶РµРЅРёРµ) ';
+$txt['ila_quote_nolink'] = ' (Р’Р»РѕР¶РµРЅРёРµ) ';
+$txt['ila_none'] = 'РєР°Рє РјРёРЅРёР°С‚СЋСЂР°';
+$txt['ila_img'] = 'РєР°Рє РїРѕР»РЅРѕСЂР°Р·РјРµСЂРЅРѕРµ РёР·РѕР±СЂР°Р¶РµРЅРёРµ';
+$txt['ila_url'] = 'РєР°Рє СЃСЃС‹Р»РєР°';
+$txt['ila_mini'] = 'РєР°Рє РєРѕСЂРѕС‚РєР°СЏ СЃСЃС‹Р»РєР°';
 //End ILA in line attachment changes
 ]]></add>
 	</operation>
@@ -137,52 +137,52 @@ $txt['ila_mini'] = 'как короткая ссылка';
 		<search position="end" />
 		<add><![CDATA[
 //ILA in line attachment changes
-$helptxt['ILA_InLineAttachments_help'] = '<b>Добавление вложений в текст сообщений</b><br />
-		Образец:
+$helptxt['ILA_InLineAttachments_help'] = '<b>Р”РѕР±Р°РІР»РµРЅРёРµ РІР»РѕР¶РµРЅРёР№ РІ С‚РµРєСЃС‚ СЃРѕРѕР±С‰РµРЅРёР№</b><br />
+		РћР±СЂР°Р·РµС†:
 		<br /><b>[attachimg=1 align=left width=400]</b>
-		<br />Будет выведено изображение шириной 400 пикселов, выравненное по левому краю. За исключением первого тега и номера вложения все остальные параметры не обязательны
+		<br />Р‘СѓРґРµС‚ РІС‹РІРµРґРµРЅРѕ РёР·РѕР±СЂР°Р¶РµРЅРёРµ С€РёСЂРёРЅРѕР№ 400 РїРёРєСЃРµР»РѕРІ, РІС‹СЂР°РІРЅРµРЅРЅРѕРµ РїРѕ Р»РµРІРѕРјСѓ РєСЂР°СЋ. Р—Р° РёСЃРєР»СЋС‡РµРЅРёРµРј РїРµСЂРІРѕРіРѕ С‚РµРіР° Рё РЅРѕРјРµСЂР° РІР»РѕР¶РµРЅРёСЏ РІСЃРµ РѕСЃС‚Р°Р»СЊРЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹ РЅРµ РѕР±СЏР·Р°С‚РµР»СЊРЅС‹
 		<br /><b>[attach=1]</b>
-		<br />В тексте сообщения появится миниатюра вложения (если это изображение). Если миниатюры не окажется, будет выведено полноразмерное изображение.
+		<br />Р’ С‚РµРєСЃС‚Рµ СЃРѕРѕР±С‰РµРЅРёСЏ РїРѕСЏРІРёС‚СЃСЏ РјРёРЅРёР°С‚СЋСЂР° РІР»РѕР¶РµРЅРёСЏ (РµСЃР»Рё СЌС‚Рѕ РёР·РѕР±СЂР°Р¶РµРЅРёРµ). Р•СЃР»Рё РјРёРЅРёР°С‚СЋСЂС‹ РЅРµ РѕРєР°Р¶РµС‚СЃСЏ, Р±СѓРґРµС‚ РІС‹РІРµРґРµРЅРѕ РїРѕР»РЅРѕСЂР°Р·РјРµСЂРЅРѕРµ РёР·РѕР±СЂР°Р¶РµРЅРёРµ.
 		<br /><br />
-		<b>Параметры:</b>
-		<br />attach=x, attachimg=x, attachurl=x, attachmini=x, где x — номер вложения
+		<b>РџР°СЂР°РјРµС‚СЂС‹:</b>
+		<br />attach=x, attachimg=x, attachurl=x, attachmini=x, РіРґРµ x вЂ” РЅРѕРјРµСЂ РІР»РѕР¶РµРЅРёСЏ
 		<br />align=left, center, right
-		<br />width=### (число в пикселах)
+		<br />width=### (С‡РёСЃР»Рѕ РІ РїРёРєСЃРµР»Р°С…)
 		<br />
-        <h3>Доступные режимы</h3>
+        <h3>Р”РѕСЃС‚СѓРїРЅС‹Рµ СЂРµР¶РёРјС‹</h3>
         <p>
-            Вы можете выбирать различные режимы вставки вложений:
+            Р’С‹ РјРѕР¶РµС‚Рµ РІС‹Р±РёСЂР°С‚СЊ СЂР°Р·Р»РёС‡РЅС‹Рµ СЂРµР¶РёРјС‹ РІСЃС‚Р°РІРєРё РІР»РѕР¶РµРЅРёР№:
             <ul>
-                <li><u>Миниатюра [attach=x]</u> Изображение будет отображаться в виде эскиза (превью)</li>
-                <li><u>Полноразмерное изображение [attachimg=x]</u> Изображение будет отображаться в полный размер. Для слишком больших изображений будут использоваться полосы прокрутки</li>
-                <li><u>Текстовая ссылка [attachurl=x]</u> В сообщении будет отображаться только ссылка на вложение, а также некоторые детали.</li>
-                <li><u>Короткая текстовая ссылка [attachmini=x]</u> В сообщении будет отображаться только ссылка на вложение, без каких-либо деталей.</li>
+                <li><u>РњРёРЅРёР°С‚СЋСЂР° [attach=x]</u> РР·РѕР±СЂР°Р¶РµРЅРёРµ Р±СѓРґРµС‚ РѕС‚РѕР±СЂР°Р¶Р°С‚СЊСЃСЏ РІ РІРёРґРµ СЌСЃРєРёР·Р° (РїСЂРµРІСЊСЋ)</li>
+                <li><u>РџРѕР»РЅРѕСЂР°Р·РјРµСЂРЅРѕРµ РёР·РѕР±СЂР°Р¶РµРЅРёРµ [attachimg=x]</u> РР·РѕР±СЂР°Р¶РµРЅРёРµ Р±СѓРґРµС‚ РѕС‚РѕР±СЂР°Р¶Р°С‚СЊСЃСЏ РІ РїРѕР»РЅС‹Р№ СЂР°Р·РјРµСЂ. Р”Р»СЏ СЃР»РёС€РєРѕРј Р±РѕР»СЊС€РёС… РёР·РѕР±СЂР°Р¶РµРЅРёР№ Р±СѓРґСѓС‚ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ РїРѕР»РѕСЃС‹ РїСЂРѕРєСЂСѓС‚РєРё</li>
+                <li><u>РўРµРєСЃС‚РѕРІР°СЏ СЃСЃС‹Р»РєР° [attachurl=x]</u> Р’ СЃРѕРѕР±С‰РµРЅРёРё Р±СѓРґРµС‚ РѕС‚РѕР±СЂР°Р¶Р°С‚СЊСЃСЏ С‚РѕР»СЊРєРѕ СЃСЃС‹Р»РєР° РЅР° РІР»РѕР¶РµРЅРёРµ, Р° С‚Р°РєР¶Рµ РЅРµРєРѕС‚РѕСЂС‹Рµ РґРµС‚Р°Р»Рё.</li>
+                <li><u>РљРѕСЂРѕС‚РєР°СЏ С‚РµРєСЃС‚РѕРІР°СЏ СЃСЃС‹Р»РєР° [attachmini=x]</u> Р’ СЃРѕРѕР±С‰РµРЅРёРё Р±СѓРґРµС‚ РѕС‚РѕР±СЂР°Р¶Р°С‚СЊСЃСЏ С‚РѕР»СЊРєРѕ СЃСЃС‹Р»РєР° РЅР° РІР»РѕР¶РµРЅРёРµ, Р±РµР· РєР°РєРёС…-Р»РёР±Рѕ РґРµС‚Р°Р»РµР№.</li>
             </ul>
         </p><br />
 		<p>
-			Вы можете выбирать тип выравнивания вложения внутри сообщения:
+			Р’С‹ РјРѕР¶РµС‚Рµ РІС‹Р±РёСЂР°С‚СЊ С‚РёРї РІС‹СЂР°РІРЅРёРІР°РЅРёСЏ РІР»РѕР¶РµРЅРёСЏ РІРЅСѓС‚СЂРё СЃРѕРѕР±С‰РµРЅРёСЏ:
 			<ul>
-				<li><u>align=left</u> Изображение будет отображаться в левой части сообщения, текст — справа</li>
-				<li><u>align=right</u> Изображение будет отображаться в правой части сообщения, текст — слева</li>
-				<li><u>align=center</u> Изображение будет отображаться в центре сообщения, текст — ниже</li>
+				<li><u>align=left</u> РР·РѕР±СЂР°Р¶РµРЅРёРµ Р±СѓРґРµС‚ РѕС‚РѕР±СЂР°Р¶Р°С‚СЊСЃСЏ РІ Р»РµРІРѕР№ С‡Р°СЃС‚Рё СЃРѕРѕР±С‰РµРЅРёСЏ, С‚РµРєСЃС‚ вЂ” СЃРїСЂР°РІР°</li>
+				<li><u>align=right</u> РР·РѕР±СЂР°Р¶РµРЅРёРµ Р±СѓРґРµС‚ РѕС‚РѕР±СЂР°Р¶Р°С‚СЊСЃСЏ РІ РїСЂР°РІРѕР№ С‡Р°СЃС‚Рё СЃРѕРѕР±С‰РµРЅРёСЏ, С‚РµРєСЃС‚ вЂ” СЃР»РµРІР°</li>
+				<li><u>align=center</u> РР·РѕР±СЂР°Р¶РµРЅРёРµ Р±СѓРґРµС‚ РѕС‚РѕР±СЂР°Р¶Р°С‚СЊСЃСЏ РІ С†РµРЅС‚СЂРµ СЃРѕРѕР±С‰РµРЅРёСЏ, С‚РµРєСЃС‚ вЂ” РЅРёР¶Рµ</li>
 			</ul>
 		</p><br />
 		<p>
-			Вы можете указывать ширину вложенных изображений:
+			Р’С‹ РјРѕР¶РµС‚Рµ СѓРєР°Р·С‹РІР°С‚СЊ С€РёСЂРёРЅСѓ РІР»РѕР¶РµРЅРЅС‹С… РёР·РѕР±СЂР°Р¶РµРЅРёР№:
 			<ul>
-				<li><u>width=123</u> Ширина отображаемого изображения будет изменена до 123 пикселов</li>
-				<li>В случае указания ширины, превышающей реальную, будет использована максимально допустимая ширина, разрешенная на форуме</li>
-				<li>Можно использовать уменьшение миниатюры, например [attach=1 width=50]
+				<li><u>width=123</u> РЁРёСЂРёРЅР° РѕС‚РѕР±СЂР°Р¶Р°РµРјРѕРіРѕ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ Р±СѓРґРµС‚ РёР·РјРµРЅРµРЅР° РґРѕ 123 РїРёРєСЃРµР»РѕРІ</li>
+				<li>Р’ СЃР»СѓС‡Р°Рµ СѓРєР°Р·Р°РЅРёСЏ С€РёСЂРёРЅС‹, РїСЂРµРІС‹С€Р°СЋС‰РµР№ СЂРµР°Р»СЊРЅСѓСЋ, Р±СѓРґРµС‚ РёСЃРїРѕР»СЊР·РѕРІР°РЅР° РјР°РєСЃРёРјР°Р»СЊРЅРѕ РґРѕРїСѓСЃС‚РёРјР°СЏ С€РёСЂРёРЅР°, СЂР°Р·СЂРµС€РµРЅРЅР°СЏ РЅР° С„РѕСЂСѓРјРµ</li>
+				<li>РњРѕР¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ СѓРјРµРЅСЊС€РµРЅРёРµ РјРёРЅРёР°С‚СЋСЂС‹, РЅР°РїСЂРёРјРµСЂ [attach=1 width=50]
 			</ul>
 		</p><br />
-        <h3>Как это использовать?</h3>
+        <h3>РљР°Рє СЌС‚Рѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ?</h3>
         <p>
-            <h4>Шаг 1 :</h4>
-            При создании сообщения выберите «Дополнительные опции», затем в секции «Вложение» укажите файл, который хотите загрузить;
-            <h4>Шаг 2 :</h4>
-            Укажите режим вставки в текст сообщения — выбрав одно из значений в раскрывающемся списке справа;
-            <h4>Шаг 3 :</h4>
-            Повторите предыдущие шаги для каждого вложения, которое захотите загрузить. Перемещайте и изменяйте теги в тексте вложения, как посчитаете нужным.
+            <h4>РЁР°Рі 1 :</h4>
+            РџСЂРё СЃРѕР·РґР°РЅРёРё СЃРѕРѕР±С‰РµРЅРёСЏ РІС‹Р±РµСЂРёС‚Рµ В«Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ РѕРїС†РёРёВ», Р·Р°С‚РµРј РІ СЃРµРєС†РёРё В«Р’Р»РѕР¶РµРЅРёРµВ» СѓРєР°Р¶РёС‚Рµ С„Р°Р№Р», РєРѕС‚РѕСЂС‹Р№ С…РѕС‚РёС‚Рµ Р·Р°РіСЂСѓР·РёС‚СЊ;
+            <h4>РЁР°Рі 2 :</h4>
+            РЈРєР°Р¶РёС‚Рµ СЂРµР¶РёРј РІСЃС‚Р°РІРєРё РІ С‚РµРєСЃС‚ СЃРѕРѕР±С‰РµРЅРёСЏ вЂ” РІС‹Р±СЂР°РІ РѕРґРЅРѕ РёР· Р·РЅР°С‡РµРЅРёР№ РІ СЂР°СЃРєСЂС‹РІР°СЋС‰РµРјСЃСЏ СЃРїРёСЃРєРµ СЃРїСЂР°РІР°;
+            <h4>РЁР°Рі 3 :</h4>
+            РџРѕРІС‚РѕСЂРёС‚Рµ РїСЂРµРґС‹РґСѓС‰РёРµ С€Р°РіРё РґР»СЏ РєР°Р¶РґРѕРіРѕ РІР»РѕР¶РµРЅРёСЏ, РєРѕС‚РѕСЂРѕРµ Р·Р°С…РѕС‚РёС‚Рµ Р·Р°РіСЂСѓР·РёС‚СЊ. РџРµСЂРµРјРµС‰Р°Р№С‚Рµ Рё РёР·РјРµРЅСЏР№С‚Рµ С‚РµРіРё РІ С‚РµРєСЃС‚Рµ РІР»РѕР¶РµРЅРёСЏ, РєР°Рє РїРѕСЃС‡РёС‚Р°РµС‚Рµ РЅСѓР¶РЅС‹Рј.
         </p>
 ';
 //End ILA in line attachment changes
@@ -199,26 +199,26 @@ $helptxt['ILA_InLineAttachments_help'] = '<b>Добавление вложений в текст сообщен
 $txt['mods_cat_modifications_ila'] = 'In Line Attachments';
 $txt['ila_desc'] = 'Setupbereich von der In Line Attachment Modifikation';
 $txt['ila_enabled'] = '(ILA) In Line attachment Modifikation aktivieren';
-$txt['ila_alwaysfullsize'] = '(ILA) Inline Bilder immer in OrginalgrцЯe zeigen';
+$txt['ila_alwaysfullsize'] = '(ILA) Inline Bilder immer in OrginalgrС†РЇe zeigen';
 $txt['ila_basicmenu'] = '(ILA) Only show basic ILA menu';
-$txt['ila_insert'] = 'Dateianhang einfьgen';
-$txt['ila_title'] = 'Am Ende vergrцЯerbare Miniaturansicht ';
-$txt['ila_option1'] = 'Im Text vergrцЯerbare Miniaturansicht';
-$txt['ila_option2'] = 'Im Text orginalgroЯes Bild';
+$txt['ila_insert'] = 'Dateianhang einfСЊgen';
+$txt['ila_title'] = 'Am Ende vergrС†РЇerbare Miniaturansicht ';
+$txt['ila_option1'] = 'Im Text vergrС†РЇerbare Miniaturansicht';
+$txt['ila_option2'] = 'Im Text orginalgroРЇes Bild';
 $txt['ila_option3'] = 'Im Text als Text link';
 $txt['ila_option4'] = 'Im Text als kurzer Text link';
-$txt['ila_nopermission'] = ' [ Ihnen ist es nicht erlaubt Dateianhдnge zu sehen ] ';
-$txt['ila_invalid'] = ' [ Dateianhang ungьltig oder nicht vorhanden ] ';
-$txt['ila_disabled'] = ' [ Dateianhдnge sind deaktiviert ] ';
+$txt['ila_nopermission'] = ' [ Ihnen ist es nicht erlaubt DateianhРґnge zu sehen ] ';
+$txt['ila_invalid'] = ' [ Dateianhang ungСЊltig oder nicht vorhanden ] ';
+$txt['ila_disabled'] = ' [ DateianhРґnge sind deaktiviert ] ';
 $txt['ila_insert_next'] = ' in der Nachricht';
-$txt['ila_attachment_missing'] = ' [ Ausgewдhlter Dateianhang ist vorhanden ]';
+$txt['ila_attachment_missing'] = ' [ AusgewРґhlter Dateianhang ist vorhanden ]';
 $txt['ila_thereare'] = 'Es sind nur';
-$txt['ila_attachment'] = 'Dateianhдnge';
-$txt['ila_forbidden_for_guest'] = ' [ Fьr Gдste keine Dateianhдnge ] ';
+$txt['ila_attachment'] = 'DateianhРґnge';
+$txt['ila_forbidden_for_guest'] = ' [ FСЊr GРґste keine DateianhРґnge ] ';
 $txt['ila_quote_link'] = ' (Dateianhang Link) ';
 $txt['ila_quote_nolink'] = ' (Dateianhang) ';
-$txt['ila_none'] = 'als vergrцЯerbare Miniaturansicht';
-$txt['ila_img'] = 'als Bild in OrginalgrцЯe';
+$txt['ila_none'] = 'als vergrС†РЇerbare Miniaturansicht';
+$txt['ila_img'] = 'als Bild in OrginalgrС†РЇe';
 $txt['ila_url'] = 'als einen Link';
 $txt['ila_mini'] = 'als einen Kurzlink';
 //End ILA in line attachment changes
@@ -230,52 +230,52 @@ $txt['ila_mini'] = 'als einen Kurzlink';
 	<operation>
 		<search position="end" />
 		<add><![CDATA[//ILA in line attachment changes
-$helptxt['ILA_InLineAttachments_help'] = '<b>Ein Inlineattachment hinzufьgen</b><br />
+$helptxt['ILA_InLineAttachments_help'] = '<b>Ein Inlineattachment hinzufСЊgen</b><br />
 		Beispiel:
 		<br /><b>[attachimg=1 align=left width=400]</b>
-		<br />Das Bild wird linksbьndig in der GrцЯe, 400 Pixeln breit, angezeigt. Der Textfluss ist umlaufend. Der Dateianhangscode und seine Nummer sind zwingend erforderlich, die weiteren Parameter sind optional.
+		<br />Das Bild wird linksbСЊndig in der GrС†РЇe, 400 Pixeln breit, angezeigt. Der Textfluss ist umlaufend. Der Dateianhangscode und seine Nummer sind zwingend erforderlich, die weiteren Parameter sind optional.
 		<br /><b>[attach=1]</b>
-		<br />Dadurch wird der Dateianhang als ein Thumbnail, falls benцtigt, angezeigt. Ansonsten wird es in voller GrцЯe angezeigt. Das Bild wird im Textfluss direkt angezeigt.
+		<br />Dadurch wird der Dateianhang als ein Thumbnail, falls benС†tigt, angezeigt. Ansonsten wird es in voller GrС†РЇe angezeigt. Das Bild wird im Textfluss direkt angezeigt.
 		<br /><br />
 		<b>Optionen:</b>
 		<br />attach=x, attachimg=x, attachurl=x, attachmini=x (Das x ist die Dateianhangsnummer).
 		<br />align=left, center, right
 		<br />width=### (Zahl in Pixel)
 		<br />
-        <h3>Verfьgbare Modi</h3>
+        <h3>VerfСЊgbare Modi</h3>
         <p>
-            Sie kцnnen verschiedene Modi fьr die Dateianhдnge wдhlen:
+            Sie kС†nnen verschiedene Modi fСЊr die DateianhРґnge wРґhlen:
             <ul>
-                <li><u>Im Text vergrцЯerbare Miniaturansicht [attach=x]</u> Das Bild wird als eine Miniaturansicht angezeigt.</li>
-                <li><u>Im Text orginalgroЯes Bild [attachimg=x]</u>  Ihr Bild wird in OrginalgrцЯe angezeigt oder bis zur erlaubten GrцЯe des Forums. Bilder, die grцЯer als die erlaubte GrцЯe sind kцnnen per Klick auf OrginalgrцЯe vergrцЯert werden.</li>
-                <li><u>Im Text als Textlink [attachurl=x]</u> Es wird nur ein Textlink gezeigt. Wird dieser Link angeklickt, цffnet sich das Bild.</li>
-                <li><u>Im Text als kurzer Textlink [attachmini=x]</u> Es wird nur ein Textlink angezeigt OHNE weitere Details. Wird dieser Link angeklickt, цffnet sich das Bild..</li>
+                <li><u>Im Text vergrС†РЇerbare Miniaturansicht [attach=x]</u> Das Bild wird als eine Miniaturansicht angezeigt.</li>
+                <li><u>Im Text orginalgroРЇes Bild [attachimg=x]</u>  Ihr Bild wird in OrginalgrС†РЇe angezeigt oder bis zur erlaubten GrС†РЇe des Forums. Bilder, die grС†РЇer als die erlaubte GrС†РЇe sind kС†nnen per Klick auf OrginalgrС†РЇe vergrС†РЇert werden.</li>
+                <li><u>Im Text als Textlink [attachurl=x]</u> Es wird nur ein Textlink gezeigt. Wird dieser Link angeklickt, С†ffnet sich das Bild.</li>
+                <li><u>Im Text als kurzer Textlink [attachmini=x]</u> Es wird nur ein Textlink angezeigt OHNE weitere Details. Wird dieser Link angeklickt, С†ffnet sich das Bild..</li>
             </ul>
         </p><br />
 		<p>
-			Sie kцnnen verschiedene Ausrichtungen der Dateianhдnge wдhlen:
+			Sie kС†nnen verschiedene Ausrichtungen der DateianhРґnge wРґhlen:
 			<ul>
-				<li><u>align=left</u> Das Bild ist links ausgerichtet und der Text wird um ihn herum flieЯen</li>
-				<li><u>align=right</u> Das Bild ist rechts ausgerichtet und der Text wird um ihn herum flieЯen</li>
+				<li><u>align=left</u> Das Bild ist links ausgerichtet und der Text wird um ihn herum flieРЇen</li>
+				<li><u>align=right</u> Das Bild ist rechts ausgerichtet und der Text wird um ihn herum flieРЇen</li>
 				<li><u>align=center</u> Das Bild wird zentriert ausgerichtet und der Text darunter.</li>
 			</ul>
 		</p><br />
 		<p>
-			Sie kцnnen verschiedene AnzeigegrцЯen der Dateianhдnge wдhlen:
+			Sie kС†nnen verschiedene AnzeigegrС†РЇen der DateianhРґnge wРґhlen:
 			<ul>
 				<li><u>width=123</u> Das Bild wird 123 Pixel breit angezeigt.</li>
-				<li>Ist die angegebe Breite grцЯer als das Bild oder grцЯer als die vom Forum erlaubte Breite wird diese verwendet.</li>
+				<li>Ist die angegebe Breite grС†РЇer als das Bild oder grС†РЇer als die vom Forum erlaubte Breite wird diese verwendet.</li>
 				<li>[attach=1 width=50] Kann benutzt werden um noch kleiner Miniaturansichten darzustellen
 			</ul>
 		</p><br />
         <h3>Wie benutzt man es?</h3>
         <p>
             <h4>Schritt 1 :</h4>
-            Wдhlen die Datei aus, welche Sie hochladen mцchten ;
+            WРґhlen die Datei aus, welche Sie hochladen mС†chten ;
             <h4>Schritt 2 :</h4>
-            Wдhlen Sie den Inline-Modus aus, den Sie nutzen mцchten aus der Liste aus;
+            WРґhlen Sie den Inline-Modus aus, den Sie nutzen mС†chten aus der Liste aus;
             <h4>Schritt 3 :</h4>
-            Wiederholen Sie die Schritte 1 und 2 fьr jeden Dateianhang, den Sie hochladen mцchten und bearbeiten das Textfeld wie gewьnscht.</p>
+            Wiederholen Sie die Schritte 1 und 2 fСЊr jeden Dateianhang, den Sie hochladen mС†chten und bearbeiten das Textfeld wie gewСЊnscht.</p>
 ';
 //End ILA in line attachment changes
 			]]></add>
@@ -325,30 +325,30 @@ $txt['ila_mini'] = 'als een compacte link';
 
 //Begin ILA in line attachment changes
 $txt['mods_cat_modifications_ila'] = 'Imagens Inseridas na Mensagem';
-$txt['ila_desc'] = 'Esta secзгo permite-lhe definir a modificaзгo In Line Attachment (ILA)';
-$txt['ila_enabled'] = '(ILA) Activar a modificaзгo In Line Attachment';
-$txt['ila_alwaysfullsize'] = '(ILA) As imagens terгo sempre a dimensгo total';
+$txt['ila_desc'] = 'Esta secР·Ріo permite-lhe definir a modificaР·Ріo In Line Attachment (ILA)';
+$txt['ila_enabled'] = '(ILA) Activar a modificaР·Ріo In Line Attachment';
+$txt['ila_alwaysfullsize'] = '(ILA) As imagens terРіo sempre a dimensРіo total';
 $txt['ila_basicmenu'] = '(ILA) Only show basic ILA menu';
 $txt['ila_insert'] = 'Inserir Anexo';
 $txt['ila_title'] = 'Mini-imagem no final da mensagem ';
-$txt['ila_option1'] = 'Mini-imagem expansнvel no texto';
+$txt['ila_option1'] = 'Mini-imagem expansРЅvel no texto';
 $txt['ila_option2'] = 'Imagem total no texto';
-$txt['ila_option3'] = 'Ligaзгo completa em texto';
-$txt['ila_option4'] = 'Ligaзгo abreviada em texto';
-$txt['ila_nopermission'] = ' [ Nгo tem permissгo para ver imagens inseridas ] ';
-$txt['ila_invalid'] = ' [ Ficheiro anexo invбlido ou nгo existente ] ';
-$txt['ila_disabled'] = ' [ Anexos nгo permitidos ] ';
+$txt['ila_option3'] = 'LigaР·Ріo completa em texto';
+$txt['ila_option4'] = 'LigaР·Ріo abreviada em texto';
+$txt['ila_nopermission'] = ' [ NРіo tem permissРіo para ver imagens inseridas ] ';
+$txt['ila_invalid'] = ' [ Ficheiro anexo invР±lido ou nРіo existente ] ';
+$txt['ila_disabled'] = ' [ Anexos nРіo permitidos ] ';
 $txt['ila_insert_next'] = ' na mensagem';
-$txt['ila_attachment_missing'] = ' [ O anexo especificado nгo estб disponнvel ]';
-$txt['ila_thereare'] = 'Hб apenas';
+$txt['ila_attachment_missing'] = ' [ O anexo especificado nРіo estР± disponРЅvel ]';
+$txt['ila_thereare'] = 'HР± apenas';
 $txt['ila_attachment'] = 'anexo(s)';
-$txt['ila_forbidden_for_guest'] = ' [ Visitantes nгo podem ver os anexos ] ';
-$txt['ila_quote_link'] = ' (Ligaзгo para o anexo) ';
+$txt['ila_forbidden_for_guest'] = ' [ Visitantes nРіo podem ver os anexos ] ';
+$txt['ila_quote_link'] = ' (LigaР·Ріo para o anexo) ';
 $txt['ila_quote_nolink'] = ' (Anexo) ';
-$txt['ila_none'] = 'como mini-imagem expansнvel';
+$txt['ila_none'] = 'como mini-imagem expansРЅvel';
 $txt['ila_img'] = 'como imagem total';
-$txt['ila_url'] = 'como uma ligaзгo';
-$txt['ila_mini'] = 'como uma ligaзгo compacta';
+$txt['ila_url'] = 'como uma ligaР·Ріo';
+$txt['ila_mini'] = 'como uma ligaР·Ріo compacta';
 //End ILA in line attachment changes
 ]]></add>
 	</operation>
@@ -361,49 +361,49 @@ $txt['ila_mini'] = 'como uma ligaзгo compacta';
 $helptxt['ILA_InLineAttachments_help'] = '<b>Adicionar uma imagem no texto</b><br />
    Exemplo:
    <br /><b>[attachimg=1 align=left width=400]</b>
-   <br />Este exemplo irб mostrar uma imagem alinhada а esquerda redimensionada para 400 pixels de largura com o texto а direita. А excepзгo de "attachimg" e do nъmero, todos os outros parвmetros sгo opcionais.
+   <br />Este exemplo irР± mostrar uma imagem alinhada Р° esquerda redimensionada para 400 pixels de largura com o texto Р° direita. Рђ excepР·Ріo de "attachimg" e do nСЉmero, todos os outros parРІmetros sРіo opcionais.
    <br /><b>[attach=1]</b>
-   <br />Este exemplo irб mostrar a imagem em formato mini, se estiver disponнvel. Se nгo estiver disponнvel, mostra a imagem na dimensгo total. A imagem estarб inserida no texto da sua mensagem.
+   <br />Este exemplo irР± mostrar a imagem em formato mini, se estiver disponРЅvel. Se nРіo estiver disponРЅvel, mostra a imagem na dimensРіo total. A imagem estarР± inserida no texto da sua mensagem.
    <br /><br />
-   <b>Opзхes:</b>
-   <br />attach=x, attachimg=x, attachurl=x, attachmini=x em que x й o nъmero do anexo
-   <br />align=left, center, right (alinhado а esquerda, centro ou direita)
-   <br />width=### (nъmero de pixels)
+   <b>OpР·С…es:</b>
+   <br />attach=x, attachimg=x, attachurl=x, attachmini=x em que x Р№ o nСЉmero do anexo
+   <br />align=left, center, right (alinhado Р° esquerda, centro ou direita)
+   <br />width=### (nСЉmero de pixels)
    <br />
-<h3>Modos disponнveis</h3>
+<h3>Modos disponРЅveis</h3>
 <p>
-   Pode seleccionar o modo para inserзгo da imagem anexa:
+   Pode seleccionar o modo para inserР·Ріo da imagem anexa:
    <ul>
-      <li><u>Mini-imagem [attach=x]</u> Serб apresentada a imagem em formato pequeno</li>
-      <li><u>Imagem completa [attachimg=x]</u> A sua imagem serб apresentada com a dimensгo total atй ao mбximo permitido pelo forum. As imagens que sejam maiores do que o permitido pelo forum serгo apresentadas no mбximo permitdo, mas com um clique na imagem verб a dimensгo total.</li>
-      <li><u>Ligaзгo em texto [attachurl=x]</u> Apenas serб apresentada uma ligaзгo com a dimensгo e outros detalhes. Com um clique na ligaзгo verб a imagem.</li>
-      <li><u>Ligaзгo abreviada em texto [attachmini=x]</u> Apenas serб apresentada uma ligaзгo sem detalhes. Com um clique na ligaзгo verб a imagem.</li>
+      <li><u>Mini-imagem [attach=x]</u> SerР± apresentada a imagem em formato pequeno</li>
+      <li><u>Imagem completa [attachimg=x]</u> A sua imagem serР± apresentada com a dimensРіo total atР№ ao mР±ximo permitido pelo forum. As imagens que sejam maiores do que o permitido pelo forum serРіo apresentadas no mР±ximo permitdo, mas com um clique na imagem verР± a dimensРіo total.</li>
+      <li><u>LigaР·Ріo em texto [attachurl=x]</u> Apenas serР± apresentada uma ligaР·Ріo com a dimensРіo e outros detalhes. Com um clique na ligaР·Ріo verР± a imagem.</li>
+      <li><u>LigaР·Ріo abreviada em texto [attachmini=x]</u> Apenas serР± apresentada uma ligaР·Ріo sem detalhes. Com um clique na ligaР·Ріo verР± a imagem.</li>
       </ul>
    </p><br />
    <p>
       Pode escolher como fazer o alinhamento da imagem:
       <ul>
-         <li><u>align=left</u> A imagem й alinhada а esquerda e o texto apresentado а direita da imagem</li>
-         <li><u>align=right</u> A imagem й alinhada а direita e o texto apresentado а esquerda da imagem</li>
-         <li><u>align=center</u> A imagem й centrada com o texto por baixo</li>
+         <li><u>align=left</u> A imagem Р№ alinhada Р° esquerda e o texto apresentado Р° direita da imagem</li>
+         <li><u>align=right</u> A imagem Р№ alinhada Р° direita e o texto apresentado Р° esquerda da imagem</li>
+         <li><u>align=center</u> A imagem Р№ centrada com o texto por baixo</li>
       </ul>
    </p><br />
    <p>
-      Pode escolher a largura para a apresentaзгo da imagem:
+      Pode escolher a largura para a apresentaР·Ріo da imagem:
       <ul>
-         <li><u>width=123</u> A imagem й apresentada com 123 pixels de largura</li>
-         <li>Se a largura indicada for maior do que a imagem ou maior do que o permitido pelo forum serб usada a maior dimensгo permitida</li>
-         <li>Tambйm pode ser usado para dimensionar a mini-imagem. [attach=1 width=50] irб apresentar uma mini-imagem com 50px de largura</li>
+         <li><u>width=123</u> A imagem Р№ apresentada com 123 pixels de largura</li>
+         <li>Se a largura indicada for maior do que a imagem ou maior do que o permitido pelo forum serР± usada a maior dimensРіo permitida</li>
+         <li>TambР№m pode ser usado para dimensionar a mini-imagem. [attach=1 width=50] irР± apresentar uma mini-imagem com 50px de largura</li>
       </ul>
       </p><br />
    <h3>Como utilizar?</h3>
    <p>
       <h4>Passo 1 :</h4>
-      Na selecзгo do ficheiro, seleccionar a imagem que quer inserir;
+      Na selecР·Ріo do ficheiro, seleccionar a imagem que quer inserir;
       <h4>Passo 2 :</h4>
-      Seleccionar o modo de inserзгo que pretende usando a caixa "Modos de inserзгo";
+      Seleccionar o modo de inserР·Ріo que pretende usando a caixa "Modos de inserР·Ріo";
       <h4>Passo 3 :</h4>
-      Repetir os passos para cada ficheiro que pretende anexar. Pode mover ou alterar as marcas no corpo da mensagem conforme necessбrio.
+      Repetir os passos para cada ficheiro que pretende anexar. Pode mover ou alterar as marcas no corpo da mensagem conforme necessР±rio.
    </p>
 ';
 //End ILA in line attachment changes
@@ -418,28 +418,28 @@ $helptxt['ILA_InLineAttachments_help'] = '<b>Adicionar uma imagem no texto</b><b
       
 //Begin ILA in line attachment changes
 $txt['mods_cat_modifications_ila'] = 'In Line Attachments';
-$txt['ila_desc'] = 'Denne sektion giver dig mulighed for at жndre indstillinger for In Line Attachment modification';
+$txt['ila_desc'] = 'Denne sektion giver dig mulighed for at Р¶ndre indstillinger for In Line Attachment modification';
 $txt['ila_enabled'] = '(ILA) Aktiver inline attachment modifikation';
-$txt['ila_alwaysfullsize'] = '(ILA) Tving inline billeder til altid af vжre fuld stшrrelse';
-$txt['ila_basicmenu'] = '(ILA) Vis kun grundlжggende ILA menu';
-$txt['ila_insert'] = 'Indsжt vedhжftning';
-$txt['ila_title'] = 'I slutning af indlжg ';
+$txt['ila_alwaysfullsize'] = '(ILA) Tving inline billeder til altid af vР¶re fuld stС€rrelse';
+$txt['ila_basicmenu'] = '(ILA) Vis kun grundlР¶ggende ILA menu';
+$txt['ila_insert'] = 'IndsР¶t vedhР¶ftning';
+$txt['ila_title'] = 'I slutning af indlР¶g ';
 $txt['ila_option1'] = 'I teksten (miniaturebillede)';
 $txt['ila_option2'] = 'I teksten (fuldt billede)';
 $txt['ila_option3'] = 'I teksten (tekst link)';
 $txt['ila_option4'] = 'I teksten (kompakt link)';
-$txt['ila_nopermission'] = ' [ Du har ikke rettigheder til at se vedhжftninger ] ';
-$txt['ila_invalid'] = ' [ Vedhжftning ugyldig eller findes ikke ] ';
-$txt['ila_disabled'] = ' [ Vedhжftning deaktiveret ] ';
-$txt['ila_insert_next'] = ' i indlжgger';
-$txt['ila_attachment_missing'] = ' [ Angivne vedhжftning er ikke tilgжngelig ]';
+$txt['ila_nopermission'] = ' [ Du har ikke rettigheder til at se vedhР¶ftninger ] ';
+$txt['ila_invalid'] = ' [ VedhР¶ftning ugyldig eller findes ikke ] ';
+$txt['ila_disabled'] = ' [ VedhР¶ftning deaktiveret ] ';
+$txt['ila_insert_next'] = ' i indlР¶gger';
+$txt['ila_attachment_missing'] = ' [ Angivne vedhР¶ftning er ikke tilgР¶ngelig ]';
 $txt['ila_thereare'] = 'Der er kun';
-$txt['ila_attachment'] = 'vedhжftning(er)';
-$txt['ila_forbidden_for_guest'] = ' [ Gжster kan ikke se vedhжftninger ] ';
-$txt['ila_quote_link'] = ' (Vedhжftning link) ';
-$txt['ila_quote_nolink'] = ' (Vedhжftning) ';
+$txt['ila_attachment'] = 'vedhР¶ftning(er)';
+$txt['ila_forbidden_for_guest'] = ' [ GР¶ster kan ikke se vedhР¶ftninger ] ';
+$txt['ila_quote_link'] = ' (VedhР¶ftning link) ';
+$txt['ila_quote_nolink'] = ' (VedhР¶ftning) ';
 $txt['ila_none'] = 'som miniaturebillede';
-$txt['ila_img'] = 'som fuldstшrrelse billede';
+$txt['ila_img'] = 'som fuldstС€rrelse billede';
 $txt['ila_url'] = 'som et link';
 $txt['ila_mini'] = 'som et kompakt link';
 //End ILA in line attachment changes
@@ -451,52 +451,52 @@ $txt['ila_mini'] = 'som et kompakt link';
    <operation>
       <search position="end" />
       <add><![CDATA[//ILA in line attachment changes
-$helptxt['ILA_InLineAttachments_help'] = '<b>Tilfшj vedhжftning i indlжgget</b><br />
+$helptxt['ILA_InLineAttachments_help'] = '<b>TilfС€j vedhР¶ftning i indlР¶gget</b><br />
       Eksempel:
       <br /><b>[attachimg=1 align=left width=400]</b>
-      <br />Dette vil vise et venstre justeret billede justeret til 400 pixel i bredden med teksten omkring. Pе nжr vedhжftnings tag og nummer er alle andre parametre valgfrie
+      <br />Dette vil vise et venstre justeret billede justeret til 400 pixel i bredden med teksten omkring. PРµ nР¶r vedhР¶ftnings tag og nummer er alle andre parametre valgfrie
       <br /><b>[attach=1]</b>
-      <br />Dette vil vise vedhжftning som et miniaturebillede hvis det er tilgжngeligt, ellers vil der blive vist et fuldstшrrelse billede. Billedet vil blive placeret i indlжgget sammen med din tekst.
+      <br />Dette vil vise vedhР¶ftning som et miniaturebillede hvis det er tilgР¶ngeligt, ellers vil der blive vist et fuldstС€rrelse billede. Billedet vil blive placeret i indlР¶gget sammen med din tekst.
       <br /><br />
       <b>Valgmuligheder:</b>
-      <br />attach=x, attachimg=x, attachurl=x, attachmini=x hvor x er nummeret pе vedhжftningen
+      <br />attach=x, attachimg=x, attachurl=x, attachmini=x hvor x er nummeret pРµ vedhР¶ftningen
       <br />align=left, center, right
       <br />width=### (nummer angives i pixels)
       <br /><br />
-        <h3>Tilgжngelige tilstande</h3>
+        <h3>TilgР¶ngelige tilstande</h3>
         <p>
-            Du kan vжlge den tilstand du шnsker for din vedhжftning:
+            Du kan vР¶lge den tilstand du С€nsker for din vedhР¶ftning:
             <ul>
                 <li><u>Miniaturebillede      [attach=x]</u> Dit billede vises som et miniaturebillede</li>
-                <li><u>Fuldstшrrelse billede [attachimg=x]</u> Dit billede vises som fuldstшrrelse op til det tilladte i forum. Billeder stшrre end det tilladte i forum vil vises i maksimal tilladte stшrrelse og kan forstшrres ved at klikke pе det</li>
-                <li><u>Tekst link            [attachurl=x]</u> Der vises kun et link med enkelte detaljer. Nеr du klikker pе linket vises billedet.</li>
-                <li><u>Kompakt link          [attachmini=x]</u> Der vises kun et link uden nogen detaljer. Nеr du klikker pе linket vises billedet.</li>
+                <li><u>FuldstС€rrelse billede [attachimg=x]</u> Dit billede vises som fuldstС€rrelse op til det tilladte i forum. Billeder stС€rre end det tilladte i forum vil vises i maksimal tilladte stС€rrelse og kan forstС€rres ved at klikke pРµ det</li>
+                <li><u>Tekst link            [attachurl=x]</u> Der vises kun et link med enkelte detaljer. NРµr du klikker pРµ linket vises billedet.</li>
+                <li><u>Kompakt link          [attachmini=x]</u> Der vises kun et link uden nogen detaljer. NРµr du klikker pРµ linket vises billedet.</li>
             </ul>
         </p><br />
       <p>
-         Du kan vжlge hvordan dit billede skal justeres i forhold til teksten:
+         Du kan vР¶lge hvordan dit billede skal justeres i forhold til teksten:
          <ul>
-            <li><u>align=left</u> Billedet placeres til venstre i indlжgget og teksten lшber omkring det til hшjre</li>
-            <li><u>align=right</u> Billedet placeres til hшjre i indlжgget og teksten lшber omkring det til venstre</li>
-            <li><u>align=center</u> Billedet placeret midt i indlжgget og teksten lшber omkring det til hшjre og venstre</li>
+            <li><u>align=left</u> Billedet placeres til venstre i indlР¶gget og teksten lС€ber omkring det til hС€jre</li>
+            <li><u>align=right</u> Billedet placeres til hС€jre i indlР¶gget og teksten lС€ber omkring det til venstre</li>
+            <li><u>align=center</u> Billedet placeret midt i indlР¶gget og teksten lС€ber omkring det til hС€jre og venstre</li>
          </ul>
       </p><br />
       <p>
-         Du kan vжlge hvor bredt dit billede skal vises:
+         Du kan vР¶lge hvor bredt dit billede skal vises:
          <ul>
-            <li><u>width=123</u> Billedet vises i en bredde pе 123pixels</li>
-            <li>Hvis den angivne bredde er stшrre end billedet eller stшrre en tilladt, vil den hшjst tilladte bredde bruges</li>
-            <li>Kan ogsе bruges til at formindste et miniaturebillede [attach=1 width=50] vil vise et miniaturebillede med en bredde pе 50px
+            <li><u>width=123</u> Billedet vises i en bredde pРµ 123pixels</li>
+            <li>Hvis den angivne bredde er stС€rre end billedet eller stС€rre en tilladt, vil den hС€jst tilladte bredde bruges</li>
+            <li>Kan ogsРµ bruges til at formindste et miniaturebillede [attach=1 width=50] vil vise et miniaturebillede med en bredde pРµ 50px
          </ul>
       </p><br />
-        <h3>Hvordan gшr du?</h3>
+        <h3>Hvordan gС€r du?</h3>
         <p>
             <h4>Trin 1:</h4>
-            Under vedhжftninger skal du vжlge den fil du vil uploade
+            Under vedhР¶ftninger skal du vР¶lge den fil du vil uploade
             <h4>Trin 2:</h4>
-            Vжlg tilstand for vedhжftningen
+            VР¶lg tilstand for vedhР¶ftningen
             <h4>Trin 3:</h4>
-            Gentag trin 1 og 2 for hver vedhжftning du vil uploade. Flyt eller rediger tags i indlжgget efter behov
+            Gentag trin 1 og 2 for hver vedhР¶ftning du vil uploade. Flyt eller rediger tags i indlР¶gget efter behov
         </p>
 ';
 //End ILA in line attachment changes

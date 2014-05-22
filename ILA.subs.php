@@ -36,7 +36,6 @@ function ila_parse_bbc(&$message, $id_msg = -1)
 	$ila_new_msg_preview = array();
 	$ila_attachments = array();
 	$board = null;
-	$save_topic = '';
 	$start_num = 0;
 
 	// Mod or BBC disabled, can't do anything !
@@ -150,7 +149,7 @@ function ila_parse_bbc(&$message, $id_msg = -1)
  * @param mixed[] $attachments
  * @param int $id_msg
  * @param int $ila_num
- * @param boolean $ila_new_msg_preview
+ * @param mixed[] $ila_new_msg_preview
  */
 function ila_parse_bbc_tag($data, $attachments, $id_msg, $ila_num, $ila_new_msg_preview)
 {
@@ -242,7 +241,6 @@ function ila_find_nested(&$message, $id_msg)
 	$regex['ila'] = '~\[attach\s*?(.*?(?:".+?")?.*?|.*?)\][\r\n]?~i';
 
 	// Break up the quotes on the endtags, this way we will get *all* the needed text
-	$quotes = array();
 	$quotes = preg_split('~(.*?</blockquote>)~si', $message, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 
 	// The last one is junk, strip it off ...
@@ -252,7 +250,6 @@ function ila_find_nested(&$message, $id_msg)
 	$quote_count = count($quotes);
 	$loop = $quote_count;
 	$start = 0;
-	$end = 0;
 
 	// Loop through the quote array
 	while ($quote_count > 0 && $loop > 0)
@@ -383,10 +380,10 @@ function ila_showInline($done, $attachments, $id_msg, $ila_num, $ila_new_msg_pre
 {
 	global $txt, $context, $modSettings, $settings;
 
-	// $done = array('id' => '', 'type' => '', 'align' => '', 'width' => '');
 	$images = array('none', 'img', 'thumb');
 
 	// Expand the done array back into vars that equal the keys ... ie $id $type
+	// $done = array('id' => '', 'type' => '', 'align' => '', 'width' => '');
 	extract($done);
 	$inlinedtext = '';
 
@@ -478,7 +475,7 @@ function ila_showInline($done, $attachments, $id_msg, $ila_num, $ila_new_msg_pre
 				if ($attachment['thumbnail']['has_thumb'])
 					$inlinedtext = '<a href="' . $attachment['href'] . ';image" id="link_' . $uniqueID . '" onclick="' . $attachment['thumbnail']['javascript'] . '"><img src="' . $attachment['thumbnail']['href'] . '" alt="' . $uniqueID . '" title="' . $ila_title . '" id="thumb_' . $uniqueID . '"  style="width:' . $width . 'px;border:0;" /></a>';
 				else
-					$inlinedtext = ila_createfakethumb($attachment, $width, $uniqueID, $id_msg);
+					$inlinedtext = ila_createfakethumb($attachment, $width, $uniqueID);
 				break;
 			// [attachurl=xx] -- no image, just a link with size/view details type = url
 			case 'url':
@@ -533,15 +530,13 @@ function ila_showInline($done, $attachments, $id_msg, $ila_num, $ila_new_msg_pre
  * @param int $uniqueID
  * @param int $id_msg
  */
-function ila_createfakethumb($attachment, $width, $uniqueID, $id_msg)
+function ila_createfakethumb($attachment, $width, $uniqueID)
 {
 	global $modSettings, $context;
 
 	// We were requested to show a thumbnail but none exists? how embarrassing, we should hang our heads in shame!
 	// So we create our own thumbnail display using html img width / height attributes on the attached image
 	$dst_width = '';
-	$dst_height = '';
-	$inlinedtext = '';
 
 	// Get the attachment size
 	$src_width = $attachment['real_width'];
@@ -693,6 +688,8 @@ function ila_load_attachments($msg_id, $topic, $board)
  */
 function ila_get_topic($msg_id)
 {
+	$db = database();
+
 	// Init
 	$topic_and_board = array(-1, null);
 

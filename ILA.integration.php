@@ -23,7 +23,7 @@ if (!defined('ELK'))
  *
  * @param mixed[] $codes
  */
-function ila_bbc_add_code($codes)
+function ila_bbc_add_code(&$codes)
 {
 	// Add in our new codes, if found on to the end of this array
 	// here mostly used to null them out should they not be rendered
