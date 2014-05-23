@@ -71,8 +71,10 @@ function ila_integrate_admin_areas(&$admin_areas)
 /**
  * ila_integrate_sa_modify_modifications()
  *
+ * - Admin Hook, integrate_sa_modify_modifications, called from AddonSettings.controller.php
+ * - Used to add subactions to the addon area
+ *
  * @param mixed $sub_actions
- * @return
  */
 function ila_integrate_sa_modify_modifications(&$sub_actions)
 {
@@ -116,20 +118,20 @@ function ila_settings()
 	if (isset($_GET['save']))
 	{
 		checkSession();
-		Settings_Form::save_db($config_vars);
 
 		// Enabling the addon then lets have the main file available, otherwise lets not ;)
 		if (isset($_POST['ila_enabled']))
-			add_integration_function('integrate_pre_include', '$sourcedir/ILA-Subs.php');
+			add_integration_function('integrate_pre_include', 'SOURCEDIR/ILA.subs.php');
 		else
-			remove_integration_function('integrate_pre_include', '$sourcedir/ILA-Subs.php');
+			remove_integration_function('integrate_pre_include', 'SOURCEDIR/ILA.subs.php');
 
-		redirectexit('action=admin;area=modsettings;sa=ila');
+		Settings_Form::save_db($config_vars);
+		redirectexit('action=admin;area=addonsettings;sa=ila');
 	}
 
 	// Continue on to the settings template
-	$context['page_title'] = $context['settings_title'] = $txt['ila_settings'];
-	$context['post_url'] = $scripturl . '?action=admin;area=modsettings;save;sa=ila';
+	$context['page_title'] = $txt['mods_cat_modifications_ila'];
+	$context['post_url'] = $scripturl . '?action=admin;area=addonsettings;save;sa=ila';
 	$context['settings_title'] = $txt['mods_cat_modifications_ila'];
 
 	Settings_Form::prepare_db($config_vars);
@@ -139,6 +141,7 @@ function ila_settings()
  * Subs hook, integrate_pre_parsebbc
  *
  * - Allow addons access before entering the main parse_bbc loop
+ * - Prevents parseBBC from working on these tags at all
  *
  * @param string $message
  * @param smixed[] $smileys
@@ -149,14 +152,19 @@ function ila_integrate_pre_parsebbc(&$message, &$smileys, &$cache_id, &$parse_ta
 {
 	global $context, $modSettings;
 
-	if (empty($parse_tags) && empty($context['uninstalling']) && !empty($modSettings['ila_enabled']) && strpos($message, '[attach') !== false)
-		ila_hide_bbc($message);
+	// Enabled and we have ila tags, then hide them from parsebbc where approriate
+	if (!empty($modSettings['ila_enabled']) && empty($parse_tags) && empty($context['uninstalling']) && stripos($message, '[attach') !== false)
+	{
+		require_once(SUBSDIR . '/ILA.subs.php');
+		$ila_parser = ILA_Parse_BBC::ila_parser($message, $cache_id);
+		$message = $ila_parser->ila_hide_bbc();
+	}
 }
 
 /**
  * Subs hook, integrate_post_parsebbc
  *
- * - Allow addons access to what parse_bbc created
+ * - Allow addons access to what parse_bbc created, here we call ILA to render its tags
  *
  * @param string $message
  * @param smixed[] $smileys
@@ -165,11 +173,13 @@ function ila_integrate_pre_parsebbc(&$message, &$smileys, &$cache_id, &$parse_ta
  */
 function ila_integrate_post_parsebbc(&$message, &$smileys, &$cache_id, &$parse_tags)
 {
-	global $context;
+	global $context, $modSettings;
 
-	if (!empty($modSettings['ila_enabled']) && empty($parse_tags) && empty($context['uninstalling']))
+	// Enabled and we have tags, time to render them
+	if (!empty($modSettings['ila_enabled']) && empty($parse_tags) && empty($context['uninstalling']) && stripos($message, '[attach') !== false)
 	{
-		if (stripos($message, '[attach') !== false)
-			ila_parse_bbc($message, $cache_id);
+		// There should be an instance already, use it
+		$ila_parser = ILA_Parse_BBC::ila_parser($message, $cache_id);
+		$message = $ila_parser->ila_parse_bbc();
 	}
 }
