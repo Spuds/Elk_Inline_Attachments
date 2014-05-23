@@ -90,8 +90,6 @@ function ila_integrate_sa_modify_modifications(&$sub_actions)
  * ModifyilaSettings()
  *
  * - Defines our settings array and uses our settings class to manage the data
- *
- * @param mixed[] $return_config
  */
 function ila_settings()
 {
