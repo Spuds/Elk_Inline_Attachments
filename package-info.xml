@@ -19,7 +19,7 @@
 	<install for="1.0 Beta - 1.0.99">
 		<readme type="file" parsebbc="true">readme.txt</readme>
 		<database>add_settings.php</database>
-		<modification>install.xml</modification>
+		<!--<modification>install.xml</modification>-->
 		<modification>language.xml</modification>
 		<require-file name="ILA.subs.php" destination="SUBSDIR">ILA Main program</require-file>
 		<require-file name="ILA.integration.php" destination="SOURCEDIR">ILA Integration functions</require-file>
@@ -34,7 +34,7 @@
 	</install>
 
 	<uninstall for="1.0 Beta - 1.0.99">
-		<modification reverse="true">install.xml</modification>
+		<!--<modification reverse="true">install.xml</modification>-->
 		<modification reverse="true">language.xml</modification>
 		<hook reverse="true" hook="integrate_bbc_codes" file="SOURCEDIR/ILA_integration.php" function="ila_bbc_add_code"/>
 		<hook reverse="true" hook="integrate_sa_modify_modifications" file="SOURCEDIR/ILA.integration.php" function="ila_sa_integrate_modify_modifications"/>

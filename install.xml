@@ -14,30 +14,11 @@
 
 <file name="THEMEDIR/Display.template.php">
 	<operation>
-		<search position="before"><![CDATA[			$last_approved_state = 1;
-			foreach ($message['attachment'] as $attachment)
-			{
-			]]></search>
+		<search position="after"><![CDATA[		if ($attachment['is_image'])]]></search>
 		<add><![CDATA[
-				// ILA in line attachment changes
-
-				if (!isset($context['ila_dont_show_attach_below']) || !array_key_exists($attachment['id'], $context['ila_dont_show_attach_below']))
-				{
-
-				// End ILA in line attachment changes
-
-			]]></add>
-	</operation>
-
-	<operation>
-	<search position="after"><![CDATA[			// If we had unapproved attachments clean up.
-	]]></search>
-	<add><![CDATA[
-			// ILA in line attachment changes
-
-			}
-
-			// End ILA in line attachment changes
+		// ILA in line attachment changes
+		if (isset($context['ila_dont_show_attach_below']) && array_key_exists($attachment['id'], $context['ila_dont_show_attach_below']))
+			continue;
 ]]></add>
 	</operation>
 </file>
