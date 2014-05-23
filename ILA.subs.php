@@ -23,28 +23,82 @@ if (!defined('ELK'))
  */
 class ILA_Parse_BBC
 {
-	// Set some things up front
+	/**
+	 * Holds attach id's that have been inlined so they can be excluded from display below
+	 * @var int[]
+	 */
 	protected $_ila_dont_show_attach_below = array();
+
+	/**
+	 * This loads an attachment's contextual data from loadAttachmentContext()
+	 * @var mixed[]
+	 */
 	protected $_ila_attachments_context = array();
+
+	/**
+	 * The singular attachment context we are working on for a given ila tag
+	 * @var mixed[]
+	 */
+	protected $_attachment = array();
+
+	/**
+	 * Holds if we feel this is a preview so blocks are rendered
+	 * @var boolean
+	 */
 	protected $_ila_new_msg_preview = array();
+
+	/**
+	 * a simple array of elements use it to keep track of attachment number usage in the message
+	 * @var int[]
+	 */
 	protected $_ila_attachments = array();
+
+	/**
+	 * The board that the message is on, used for permission check
+	 * @var int
+	 */
 	protected $_board = null;
+
+	/**
+	 * Pointer to the attachment ID to use as we loop through a message using sequential [attach] method
+	 * @var ing
+	 */
 	protected $_start_num = 0;
+
+	/**
+	 * The message body that we are looking for tags in
+	 * @var string
+	 */
 	protected $_message = '';
+
+	/**
+	 * Topic ID that the message is associated with
+	 * @var int
+	 */
 	protected $_topic = '';
+
+	/**
+	 * The message id as supplied from parsebbc, blank indicates a new or preview
+	 * @var int|null
+	 */
 	protected $_id_msg = null;
 
 	/**
-	 * Holds current instance of the class
-	 * @var Database_MySQL
+	 * The details of the current ILA tag being worked on
+	 * @var mixed[]
 	 */
-	private static $_ila_parser = null;
+	protected $_curr_tag = array();
 
-	private function __construct(&$message, $id_msg)
+	/**
+	 * contstuctor, loads the message an id in to the class
+	 *
+	 * @param string $message
+	 * @param int|null $id_msg
+	 */
+	public function __construct($message, $id_msg)
 	{
 		$this->_message = $message;
 		$this->_id_msg = $id_msg;
-		require_once (SUBSDIR . '/Attachments.subs.php');
 	}
 
 	/**
@@ -57,24 +111,25 @@ class ILA_Parse_BBC
 	{
 		global $modSettings, $context, $txt, $attachments;
 
-		// Mod or BBC disabled, can't do anything !
-		if (empty($modSettings['ila_enabled']) || empty($modSettings['enableBBC']))
-			return $this->_message;;
+		require_once (SUBSDIR . '/Attachments.subs.php');
 
-		// Previewing a modified message, check for $_REQUEST['msg']
+		// Addon or BBC disabled, can't do anything !
+		if (empty($modSettings['ila_enabled']) || empty($modSettings['enableBBC']))
+			return $this->_message;
+
+		// Previewing a modified message, check for a value in $_REQUEST['msg']
 		$this->_id_msg = empty($this->_id_msg) ? (isset($_REQUEST['msg']) ? (int) $_REQUEST['msg'] : -1) : $this->_id_msg;
 
 		// No message id and not previewing a new message ($_REQUEST['ila'] will be set)
 		if ($this->_id_msg === -1 && !isset($_REQUEST['ila']))
 		{
 			// Make sure block quotes are cleaned up, then return
-			$this->ila_find_nested();
-			return $this->_message;;
+			$this->_ila_find_nested();
+			return $this->_message;
 		}
 
-		// If there is a message number then get the topic and board that *its* from, we
-		// can't trust the $topic global due to portals and other integration
-		$this->ila_get_topic();
+		// Can't trust the $topic global due to portals and other integration
+		$this->_ila_get_topic();
 
 		// Lets make sure we have the attachments, for this message, to work with so we can get the context array
 		if (!isset($attachments[$this->_id_msg]))
@@ -83,25 +138,25 @@ class ILA_Parse_BBC
 		// Now get the rest of the details for these attachments
 		$this->_ila_attachments_context = loadAttachmentContext($this->_id_msg);
 
-		// Do we have new --- not yet uploaded ---- attachments in either a new or a modified message?
+		// Do we have new, not yet uploaded, attachments in either a new or a modified message (preview)?
 		if (isset($_REQUEST['ila']))
 		{
 			$this->_start_num = isset($attachments[$this->_id_msg]) ? count($attachments[$this->_id_msg]) : 0;
 			$ila_temp = explode(',', $_REQUEST['ila']);
 
+			// Add thme at the end of the currenlty uploaded attachment count index
 			foreach ($ila_temp as $new_attach)
 			{
-				// Add at the end of the currenlty uploaded attachment count index
 				$this->_start_num++;
 				$this->_ila_new_msg_preview[$this->_start_num] = $new_attach;
 			}
 		}
 
 		// Take care of any attach links that reside in quote blocks, we must render these out first
-		$this->ila_find_nested();
+		$this->_ila_find_nested();
 
 		// Find all of the inline attach tags in this message
-		// [attachimg=xx] [attach=xx] [attachthumb=xx] [attachurl=xx] [attachmini=xx] or
+		// [attachimg=xx] [attach=xx] [attachurl=xx] [attachmini=xx] [attach] or
 		// some malformed ones like [attachIMG = "xx"]
 		// ila_tags[0] will hold the entire tag [1] will hold the attach type (before the ]) eg img=1
 		$ila_tags = array();
@@ -126,11 +181,11 @@ class ILA_Parse_BBC
 				{
 					foreach ($ila_tags[1] as $id => $ila_replace)
 					{
-						$this->_message = $this->ila_str_replace_once($ila_tags[0][$id], $this->ila_parse_bbc_tag($ila_replace, $this->_ila_attachments_context, $this->_id_msg, $ila_num, $this->_ila_new_msg_preview), $this->_message);
+						$this->_message = $this->ila_str_replace_once($ila_tags[0][$id], $this->ila_parse_bbc_tag($ila_replace, $ila_num), $this->_message);
 						$ila_num++;
 					}
 				}
-				// We have tags in the message and no attachments, repalce them with an failed message
+				// We have tags in the message and no attachments, replace them with an failed message
 				elseif (!empty($ila_tags))
 				{
 					// There are a few reasons why this can, and does, occur
@@ -155,26 +210,25 @@ class ILA_Parse_BBC
 	 * - Fixes some common usage errors
 	 *
 	 * @param string $data
-	 * @param mixed[] $attachments
 	 * @param int $ila_num
 	 */
-	private function ila_parse_bbc_tag($data, $attachments, $ila_num)
+	private function ila_parse_bbc_tag($data, $ila_num)
 	{
-		$done = array('id' => '', 'type' => '', 'align' => '', 'width' => '');
+		$this->_curr_tag = array('id' => '', 'type' => '', 'align' => '', 'width' => '');
 		$data = trim($data);
 
 		// Find the align tag, save its value and remove it from the data string
 		$matches = array();
 		if (preg_match('~align\s{0,1}=(?:&quot;)?(right|left|center)(?:&quot;)?~i', $data, $matches))
 		{
-			$done['align'] = strtolower($matches[1]);
+			$this->_curr_tag['align'] = strtolower($matches[1]);
 			$data = str_replace($matches[0], '', $data);
 		}
 
 		// Find the width tag, save its value and remove it from the data string
 		if (preg_match('~width\s{0,1}=(?:&quot;)?(\d+)(?:&quot;)?~i', $data, $matches))
 		{
-			$done['width'] = strtolower($matches[1]);
+			$this->_curr_tag['width'] = strtolower($matches[1]);
 			$data = str_replace($matches[0], '', $data);
 		}
 
@@ -184,36 +238,36 @@ class ILA_Parse_BBC
 		if ($result && $temp[1] != '')
 		{
 			// One of img=1 thumb=1 mini=1 url=1, we hope ;)
-			$done['id'] = isset($temp[2]) ? trim($temp[2]) : '';
-			$done['type'] = $temp[1];
+			$this->_curr_tag['id'] = isset($temp[2]) ? trim($temp[2]) : '';
+			$this->_curr_tag['type'] = $temp[1];
 		}
 		else
 		{
 			// Nothing but a =x, or =x and wrong tags, or even perhaps nothing at all since we support that to!
-			$done['id'] = isset($temp[2]) ? trim($temp[2]) : '';
-			$done['type'] = 'none';
+			$this->_curr_tag['id'] = isset($temp[2]) ? trim($temp[2]) : '';
+			$this->_curr_tag['type'] = 'none';
 		}
 
 		// Lets help the kids out by fixing some common erros in usage, I mean did they read the super great help?
 		// like attach=#1 -> attach=1
-		$done['id'] = str_replace('#', '', $done['id']);
+		$this->_curr_tag['id'] = str_replace('#', '', $this->_curr_tag['id']);
 
 		// like [attach] -> attach=1 by assuming attachments are sequentally placed in the
 		// topic and sub in the attachment index increment
-		if (is_numeric($done['id']))
+		if (is_numeric($this->_curr_tag['id']))
 			// Remove this attach choice since we have used it
-			$this->_ila_attachments = array_diff($this->_ila_attachments, array($done['id']));
+			$this->_ila_attachments = array_diff($this->_ila_attachments, array($this->_curr_tag['id']));
 		else
 		{
 			// Take the first un-used attach number and use it
-			$done['id'] = array_shift($this->_ila_attachments);
+			$this->_curr_tag['id'] = array_shift($this->_ila_attachments);
 
 			// Stick it back on the end in case we need to loop around
-			array_push($this->_ila_attachments, $done['id']);
+			array_push($this->_ila_attachments, $this->_curr_tag['id']);
 		}
 
 		// Replace this tag with the inlined attachment
-		$result = $this->ila_showInline($done, $attachments, $this->_id_msg, $ila_num, $this->_ila_new_msg_preview);
+		$result = $this->ila_showInline($ila_num);
 
 		return !empty($result) ? $result : '[attach' . $data . ']';
 	}
@@ -229,7 +283,7 @@ class ILA_Parse_BBC
 	 *
 	 * - Is painfully complicated as is, should consider other approaches me thinks
 	 */
-	private function ila_find_nested()
+	private function _ila_find_nested()
 	{
 		global $modSettings, $context, $txt, $scripturl;
 
@@ -299,7 +353,7 @@ class ILA_Parse_BBC
 					if ($msg_id != '')
 					{
 						if (!isset($context['current_topic']))
-							$this->ila_get_topic();
+							$this->_ila_get_topic();
 						else
 							$this->_topic = $context['current_topic'];
 						$linktoquotedmsg = '<a href="' . $scripturl . '/topic,' . $this->_topic . '.' . $msg_id . '.html#' . $msg_id . '">' . $txt['ila_quote_link'] . '</a>';
@@ -337,132 +391,74 @@ class ILA_Parse_BBC
 	 * - Does the actual replacement of the [attach tag with the img tag
 	 *
 	 * @param mixed[] $done
-	 * @param mixed[] $attachments
 	 * @param int $ila_num
 	 */
-	private function ila_showInline($done, $attachments, $ila_num)
+	private function ila_showInline($ila_num)
 	{
-		global $txt, $context, $modSettings, $settings;
+		global $txt, $modSettings;
 
 		$images = array('none', 'img', 'thumb');
 
-		// Expand the done array back into vars that equal the keys ... ie $id $type
-		// $done = array('id' => '', 'type' => '', 'align' => '', 'width' => '');
-		extract($done);
-		$inlinedtext = '';
-
-		// Find the text of the attachment being referred to, the attachment array starts at 0 but the
-		// tags in the message start at 1 to make it easy for those humons, need to shift the id
-		if (isset($attachments[$id - 1]))
-			$attachment = $attachments[$id - 1];
-		else
-			$attachment = '';
+		// Find the text of the attachment being referred to
+		$this->_attachment = isset($this->_ila_attachments_context[$this->_curr_tag['id'] - 1]) ? $this->_ila_attachments_context[$this->_curr_tag['id'] - 1] : '';
 
 		// We found an attachment that matches our attach id in the message
-		if ($attachment != '')
+		if ($this->_attachment != '')
 		{
 			// We need a unique css id for javascript to find the correct image, cant just use the
 			// attach id since we allow the users to use the same attachment many times in the same post.
-			$uniqueID = $attachment['id'] . '-' . $ila_num;
+			$uniqueID = $this->_attachment['id'] . '-' . $ila_num;
 
-			if ($attachment['is_image'])
+			if ($this->_attachment['is_image'])
 			{
-				// Make sure we have the javascript call set, for admins who turn off
-				// thumbnails and set a max width and other crazy stuff
-				if (!isset($attachment['thumbnail']['javascript']))
+				// Make sure we have the javascript call set
+				if (!isset($this->_attachment['thumbnail']['javascript']))
 				{
-					if (((!empty($modSettings['max_image_width']) && $attachment['real_width'] > $modSettings['max_image_width']) || (!empty($modSettings['max_image_height']) && $attachment['real_height'] > $modSettings['max_image_height'])))
+					if (((!empty($modSettings['max_image_width']) && $this->_attachment['real_width'] > $modSettings['max_image_width']) || (!empty($modSettings['max_image_height']) && $this->_attachment['real_height'] > $modSettings['max_image_height'])))
 					{
-						if (isset($attachment['width']) && isset($attachment['height']))
-							$attachment['thumbnail']['javascript'] = 'return reqWin(\'' . $attachment['href'] . ';image\', ' . ($attachment['width'] + 20) . ', ' . ($attachment['height'] + 20) . ', true);';
+						if (isset($this->_attachment['width']) && isset($this->_attachment['height']))
+							$this->_attachment['thumbnail']['javascript'] = 'return reqWin(\'' . $this->_attachment['href'] . ';image\', ' . ($this->_attachment['width'] + 20) . ', ' . ($this->_attachment['height'] + 20) . ', true);';
 						else
-							$attachment['thumbnail']['javascript'] = 'return expandThumb(' . $attachment['href'] . ');';
+							$this->_attachment['thumbnail']['javascript'] = 'return expandThumb(' . $this->_attachment['href'] . ');';
 					}
 					else
-						$attachment['thumbnail']['javascript'] = 'return ILAexpandThumb(' . $uniqueID . ');';
+						$this->_attachment['thumbnail']['javascript'] = 'return expandThumb(' . $uniqueID . ');';
 				}
 
-				// Set up our private js call if needed, taken from display.php but with our ilaexpandthumb replacement
-				if (!empty($attachment['thumbnail']['has_thumb']))
+				// Set up our private js call if needed
+				if (!empty($this->_attachment['thumbnail']['has_thumb']))
 				{
 					// If the image is too large to show inline, make it a popup window.
-					if (((!empty($modSettings['max_image_width']) && $attachment['real_width'] > $modSettings['max_image_width']) || (!empty($modSettings['max_image_height']) && $attachment['real_height'] > $modSettings['max_image_height'])))
-						$attachment['thumbnail']['javascript'] = $attachment['thumbnail']['javascript'];
+					if (((!empty($modSettings['max_image_width']) && $this->_attachment['real_width'] > $modSettings['max_image_width']) || (!empty($modSettings['max_image_height']) && $this->_attachment['real_height'] > $modSettings['max_image_height'])))
+						$this->_attachment['thumbnail']['javascript'] = $this->_attachment['thumbnail']['javascript'];
 					else
-						$attachment['thumbnail']['javascript'] = 'return ILAexpandThumb(' . $uniqueID . ');';
+						$this->_attachment['thumbnail']['javascript'] = 'return expandThumb(' . $uniqueID . ');';
 				}
 			}
 
 			// Fix any tag option incompatabilities
 			if (!empty($modSettings['ila_alwaysfullsize']))
-				$type = 'img';
+				$this->_curr_tag['type'] = 'img';
 
-			// Cant show an image for a non image attachment
-			if ((!$attachment['is_image']) && (in_array($type, $images)))
-				$type = 'url';
+			// Can't show an image for a non image attachment
+			if ((!$this->_attachment['is_image']) && (in_array($this->_curr_tag['type'], $images)))
+				$this->_curr_tag['type'] = 'url';
 
 			// Create the image tag based off the type given
-			switch ($type)
-			{
-				// [attachimg=xx -- full sized image type=img
-				case 'img':
-					// Make sure the width its not bigger than the actual image or bigger than allowed by the admin
-					if ($width != '')
-						$width = !empty($modSettings['max_image_width']) ? min($width, $attachment['real_width'], $modSettings['max_image_width']) : min($width, $attachment['real_width']);
-					else
-						$width = !empty($modSettings['max_image_width']) ? min($attachment['real_width'], $modSettings['max_image_width']) : $attachment['real_width'];
-
-					$ila_title = isset($context['subject']) ? $context['subject'] : (isset($attachment['name']) ? $attachment['name'] : '');
-
-					// Insert the correct image tag, clickable or just a full image
-					if ($width < $attachment['real_width'])
-						$inlinedtext = '<a href="' . $attachment['href'] . ';image" id="link_' . $uniqueID . '" onclick="' . $attachment['thumbnail']['javascript'] . '"><img src="' . $attachment['href'] . ';image" alt="' . $uniqueID . '" title="' . $ila_title . '" id="thumb_' . $uniqueID . '" style="width:' . $width . 'px;border:0;" /></a>';
-					else
-						$inlinedtext = '<img src="' . $attachment['href'] . ';image" alt="" title="' . $ila_title . '" id="thumb_' . $uniqueID . '" style="width:' . $width . 'px;border:0;" />';
-					break;
-				// [attach=xx] or depreciated [attachthumb=xx]-- thumbnail
-				case 'none':
-					// If a thumbnail is available use it, if not create one and use it
-					if ($width != '' && $attachment['thumbnail']['has_thumb'])
-						$width = min($width, isset($attachment['real_width']) ? $attachment['real_width'] : (isset($modSettings['attachmentThumbWidth']) ? $modSettings['attachmentThumbWidth'] : 160));
-					elseif ($attachment['thumbnail']['has_thumb'])
-						$width = isset($modSettings['attachmentThumbWidth']) ? $modSettings['attachmentThumbWidth'] : 160;
-					elseif ($width != '')
-						$width = min($width, isset($modSettings['attachmentThumbWidth']) ? $modSettings['attachmentThumbWidth'] : 160, $attachment['real_width']);
-					else
-						$width = min(isset($modSettings['attachmentThumbWidth']) ? $modSettings['attachmentThumbWidth'] : 160, $attachment['real_width']);
-
-					$ila_title = isset($context['subject']) ? $context['subject'] : (isset($attachment['name']) ? $attachment['name'] : '');
-
-					// Now with the width defined insert the thumbnail if available or create the
-					// 'fake' html resized thumb
-					if ($attachment['thumbnail']['has_thumb'])
-						$inlinedtext = '<a href="' . $attachment['href'] . ';image" id="link_' . $uniqueID . '" onclick="' . $attachment['thumbnail']['javascript'] . '"><img src="' . $attachment['thumbnail']['href'] . '" alt="' . $uniqueID . '" title="' . $ila_title . '" id="thumb_' . $uniqueID . '"  style="width:' . $width . 'px;border:0;" /></a>';
-					else
-						$inlinedtext = $this->ila_createfakethumb($attachment, $width, $uniqueID);
-					break;
-				// [attachurl=xx] -- no image, just a link with size/view details type = url
-				case 'url':
-					$inlinedtext = '<a href="' . $attachment['href'] . '"><img src="' . $settings['images_url'] . '/icons/clip.gif" align="middle" alt="*" border="0" />&nbsp;' . $attachment['name'] . '</a> (' . $attachment['size'] . ($attachment['is_image'] ? '. ' . $attachment['real_width'] . 'x' . $attachment['real_height'] . ' - ' . $txt['attach_viewed'] : ' - ' . $txt['attach_downloaded']) . ' ' . $attachment['downloads'] . ' ' . $txt['attach_times'] . '.)';
-					break;
-				// [attachmini=xx] -- just a plain link type = mini
-				case 'mini':
-					$inlinedtext = '<a href="' . $attachment['href'] . '"><img src="' . $settings['images_url'] . '/icons/clip.gif" align="middle" alt="*" border="0" />&nbsp;' . $attachment['name'] . '</a>';
-					break;
-			}
+			$inlinedtext = $this->ila_build_img_tag($uniqueID);
 
 			// Handle the align tag if it was supplied, should move this to CSS yes
-			if ($align == 'left' || $align == 'right')
-				$inlinedtext = '<div style="float: ' . $align . ';margin: .5ex 1ex 1ex 1ex;">' . $inlinedtext . '</div>';
-			elseif ($align == 'center')
+			if ($this->_curr_tag['align'] == 'left' || $this->_curr_tag['align'] == 'right')
+				$inlinedtext = '<div style="float: ' . $this->_curr_tag['align'] . ';margin: .5ex 1ex 1ex 1ex;">' . $inlinedtext . '</div>';
+			elseif ($this->_curr_tag['align'] == 'center')
 				$inlinedtext = '<div style="width: 100%;margin: 0 auto;text-align: center">' . $inlinedtext . '</div>';
 
 			// Keep track of the attachments we have in-lined so we can exclude them from being displayed in the post footers
-			$this->_ila_dont_show_attach_below[$attachment['id']] = 1;
+			$this->_ila_dont_show_attach_below[$this->_attachment['id']] = 1;
 		}
 		else
 		{
-			// couldn't find the attachment specified
+			// Couldn't find the attachment specified
 			// - they may have specified it wrong
 			// - or they don't have permissions for attachments
 			// - or they are replying to a message and this is in a quote, code or other type of tag
@@ -472,8 +468,8 @@ class ILA_Parse_BBC
 			if (allowedTo('view_attachments'))
 			{
 				// Check to see if the preview flag, via attach number, is set, if so try to render a preview ILA
-				if (isset($this->_ila_new_msg_preview[$id]))
-					$inlinedtext = $this->ila_preview_inline($this->_ila_new_msg_preview[$id], $type, $id, $align, $width);
+				if (isset($this->_ila_new_msg_preview[$this->_curr_tag['id']]))
+					$inlinedtext = $this->ila_preview_inline($this->_ila_new_msg_preview[$this->_curr_tag['id']], $this->_curr_tag['type'], $this->_curr_tag['id'], $this->_curr_tag['align'], $this->_curr_tag['width']);
 				else
 					$inlinedtext = $txt['ila_attachment_missing'];
 			}
@@ -484,30 +480,94 @@ class ILA_Parse_BBC
 		return $inlinedtext;
 	}
 
+	private function ila_build_img_tag($uniqueID)
+	{
+		global $txt, $context, $modSettings, $settings;
+
+		$inlinedtext = '';
+
+		switch ($this->_curr_tag['type'])
+		{
+			// [attachimg=xx -- full sized image type=img
+			case 'img':
+				// Make sure the width its not bigger than the actual image or bigger than allowed by the admin
+				if ($this->_curr_tag['width'] != '')
+					$this->_curr_tag['width'] = !empty($modSettings['max_image_width']) ? min($this->_curr_tag['width'], $this->_attachment['real_width'], $modSettings['max_image_width']) : min($this->_curr_tag['width'], $this->_attachment['real_width']);
+				else
+					$this->_curr_tag['width'] = !empty($modSettings['max_image_width']) ? min($this->_attachment['real_width'], $modSettings['max_image_width']) : $this->_attachment['real_width'];
+
+				$ila_title = isset($context['subject']) ? $context['subject'] : (isset($this->_attachment['name']) ? $this->_attachment['name'] : '');
+
+				// Insert the correct image tag, clickable or just a full image
+				if ($this->_curr_tag['width'] < $this->_attachment['real_width'])
+					$inlinedtext = '
+						<a href="' . $this->_attachment['href'] . ';image" id="link_' . $uniqueID . '" onclick="' . $this->_attachment['thumbnail']['javascript'] . '">
+							<img src="' . $this->_attachment['href'] . ';image" alt="' . $uniqueID . '" title="' . $ila_title . '" id="thumb_' . $uniqueID . '" style="width:' . $this->_curr_tag['width'] . 'px;border:0;" />
+						</a>';
+				else
+					$inlinedtext = '<img src="' . $this->_attachment['href'] . ';image" alt="" title="' . $ila_title . '" id="thumb_' . $uniqueID . '" style="width:' . $this->_curr_tag['width'] . 'px;border:0;" />';
+				break;
+			// [attach=xx] or [attach]
+			case 'none':
+				// If a thumbnail is available use it, if not create one and use it
+				if ($this->_curr_tag['width'] != '' && $this->_attachment['thumbnail']['has_thumb'])
+					$this->_curr_tag['width'] = min($this->_curr_tag['width'], isset($this->_attachment['real_width']) ? $this->_attachment['real_width'] : (isset($modSettings['attachmentThumbWidth']) ? $modSettings['attachmentThumbWidth'] : 160));
+				elseif ($this->_attachment['thumbnail']['has_thumb'])
+					$this->_curr_tag['width'] = isset($modSettings['attachmentThumbWidth']) ? $modSettings['attachmentThumbWidth'] : 160;
+				elseif ($this->_curr_tag['width'] != '')
+					$this->_curr_tag['width'] = min($this->_curr_tag['width'], isset($modSettings['attachmentThumbWidth']) ? $modSettings['attachmentThumbWidth'] : 160, $this->_attachment['real_width']);
+				else
+					$this->_curr_tag['width'] = min(isset($modSettings['attachmentThumbWidth']) ? $modSettings['attachmentThumbWidth'] : 160, $this->_attachment['real_width']);
+
+				$ila_title = isset($context['subject']) ? $context['subject'] : (isset($this->_attachment['name']) ? $this->_attachment['name'] : '');
+
+				// Now with the width defined insert the thumbnail if available or create an html resized one
+				if ($this->_attachment['thumbnail']['has_thumb'])
+					$inlinedtext = '
+						<a href="' . $this->_attachment['href'] . ';image" id="link_' . $uniqueID . '" onclick="' . $this->_attachment['thumbnail']['javascript'] . '">
+							<img src="' . $this->_attachment['thumbnail']['href'] . '" alt="' . $uniqueID . '" title="' . $ila_title . '" id="thumb_' . $uniqueID . '"  style="width:' . $this->_curr_tag['width'] . 'px;" />
+						</a>';
+				else
+					$inlinedtext = $this->ila_createfakethumb($uniqueID);
+				break;
+			// [attachurl=xx] -- no image, just a link with size/view details type = url
+			case 'url':
+				$inlinedtext = '
+					<a href="' . $this->_attachment['href'] . '">
+						<img src="' . $settings['images_url'] . '/icons/clip.gif" align="middle" alt="*" border="0" />&nbsp;' . $this->_attachment['name'] . '
+					</a> (' . $this->_attachment['size'] . ($this->_attachment['is_image'] ? '. ' . $this->_attachment['real_width'] . 'x' . $this->_attachment['real_height'] . ' - ' . $txt['attach_viewed'] : ' - ' . $txt['attach_downloaded']) . ' ' . $this->_attachment['downloads'] . ' ' . $txt['attach_times'] . '.)';
+				break;
+			// [attachmini=xx] -- just a plain link type = mini
+			case 'mini':
+				$inlinedtext = '<a href="' . $this->_attachment['href'] . '"><img src="' . $settings['images_url'] . '/icons/clip.gif" align="middle" alt="*" border="0" />&nbsp;' . $this->_attachment['name'] . '</a>';
+				break;
+		}
+
+		return $inlinedtext;
+	}
+
 	/**
 	 * ila_createfakethumb()
 	 *
-	 * Creates the false thumbnail if none exits
+	 * Creates the h tml sized thumbnail if none exists
 	 *
-	 * @param mixed[] $attachment
-	 * @param int $width
 	 * @param int $uniqueID
 	 */
-	private function ila_createfakethumb($attachment, $width, $uniqueID)
+	private function ila_createfakethumb($uniqueID)
 	{
 		global $modSettings, $context;
 
-		// We were requested to show a thumbnail but none exists? how embarrassing, we should hang our heads in shame!
-		// So we create our own thumbnail display using html img width / height attributes on the attached image
+		// We were requested to show a thumbnail but none exists
 		$dst_width = '';
+		$inlinedtext = '';
 
 		// Get the attachment size
-		$src_width = $attachment['real_width'];
-		$src_height = $attachment['real_height'];
+		$src_width = $this->_attachment['real_width'];
+		$src_height = $this->_attachment['real_height'];
 
 		// Set thumbnail limits
-		$max_width = $width;
-		$max_height = min(isset($modSettings['attachmentThumbHeight']) ? $modSettings['attachmentThumbHeight'] : 120, floor($width / 1.333));
+		$max_width = $this->_curr_tag['width'];
+		$max_height = min(isset($modSettings['attachmentThumbHeight']) ? $modSettings['attachmentThumbHeight'] : 120, $this->_curr_tag['width']);
 
 		// Determine whether to resize to max width or to max height (depending on the limits.)
 		if ($src_height * $max_width / $src_width <= $max_height)
@@ -522,13 +582,18 @@ class ILA_Parse_BBC
 		}
 
 		// Don't show a link if we can't resize or if we were asked not to
-		$ila_title = isset($context['subject']) ? $context['subject'] : (isset($attachment['name']) ? $attachment['name'] : '');
+		$ila_title = isset($context['subject']) ? $context['subject'] : (isset($this->_attachment['name']) ? $this->_attachment['name'] : '');
 
 		// Build the relacement string
 		if ($dst_width < $src_width || $dst_height < $src_height)
-			$inlinedtext = '<a href="' . $attachment['href'] . ';image" id="link_' . $uniqueID . '" onclick="return ILAexpandThumb(' . $uniqueID . ');"><img src="' . $attachment['href'] . '" alt="' . $uniqueID . '" title="' . $ila_title . '" style="width:' . $dst_width . 'px;height:' . $dst_height . 'border:0;" id="thumb_' . $uniqueID . '" /></a>';
+			$inlinedtext = '
+				<a href="' . $this->_attachment['href'] . ';image" id="link_' . $uniqueID . '" onclick="return expandThumb(' . $uniqueID . ');">
+					<img src="' . $this->_attachment['href'] . '" alt="' . $uniqueID . '" title="' . $ila_title . '" style="width:' . $dst_width . 'px;height:' . $dst_height . 'border:0;" id="thumb_' . $uniqueID . '" />
+				</a>';
 		else
-			$inlinedtext = '<img src="' . $attachment['href'] . ';image" alt="" title="' . $ila_title . '" border="0" />';
+			$inlinedtext = '
+				<img src="' . $this->_attachment['href'] . ';image" alt="" title="' . $ila_title . '" border="0" />';
+
 		return $inlinedtext;
 	}
 
@@ -540,7 +605,7 @@ class ILA_Parse_BBC
 	 * @param string $attachname
 	 * @param string $type
 	 * @param int $id
-	 * @param string $align
+	 * @param string
 	 * @param int $width
 	 */
 	private function ila_preview_inline($attachname, $type, $id, $align, $width)
@@ -618,7 +683,7 @@ class ILA_Parse_BBC
 	 *
 	 * - Get the topic and board for a given message number, needed to check permissions
 	 */
-	private function ila_get_topic()
+	private function _ila_get_topic()
 	{
 		$db = database();
 
@@ -664,49 +729,38 @@ class ILA_Parse_BBC
 		}
 		return substr_replace($haystack, $replace, $pos, strlen($needle));
 	}
+}
 
-	/**
-	 * ila_hide_bbc()
-	 *
-	 * Makes [attach tags invisible for certain bbc blocks like code, nobbc, etc
-	 *
-	 * @param string $hide_tags
-	 */
-	public function ila_hide_bbc($hide_tags = '')
+/**
+ * ila_hide_bbc()
+ *
+ * Makes [attach tags invisible for certain bbc blocks like code, nobbc, etc
+ *
+ * @param string $hide_tags
+ */
+function ila_hide_bbc(&$message, $hide_tags = '')
+{
+	global $modSettings;
+
+	// Not using BBC no need to do anything
+	if (empty($modSettings['enableBBC']))
+		return;
+
+	// If our ila attach tags are nested inside of these tags we need to hide them so they don't execute
+	if ($hide_tags == '')
+		$hide_tags = array('code', 'html', 'php', 'noembed', 'nobbc');
+
+	// Look for each tag, if attach is found inside then replace its '[' with a hex
+	// so parse bbc does not try to render them
+	foreach ($hide_tags as $tag)
 	{
-		global $modSettings;
-
-		// Not using BBC no need to do anything
-		if (empty($modSettings['enableBBC']))
-			return $this->_message;
-
-		// If our ila attach tags are nested inside of these tags we need to hide them so they don't execute
-		if ($hide_tags == '')
-			$hide_tags = array('code', 'html', 'php', 'noembed', 'nobbc');
-
-		// Look for each tag, if attach is found inside then replace its '[' with a hex
-		// so parse bbc does not try to render them
-		foreach ($hide_tags as $tag)
+		if (stripos($message, '[' . $tag . ']') !== false)
 		{
-			if (stripos($this->_message, '[' . $tag . ']') !== false)
-			{
-				$this->_message = preg_replace_callback('~\[' . $tag . ']((?>[^[]|\[(?!/?' . $tag . ']))+?)\[/' . $tag . ']~i',
-				function($matches) use($tag) {return "[" . $tag . "]" . str_ireplace("[attach", "&#91;attach", $matches[1]) . "[/" . $tag . "]";},
-				$this->_message);
-			}
+			$message = preg_replace_callback('~\[' . $tag . ']((?>[^[]|\[(?!/?' . $tag . ']))+?)\[/' . $tag . ']~i',
+			function($matches) use($tag) {return "[" . $tag . "]" . str_ireplace("[attach", "&#91;attach", $matches[1]) . "[/" . $tag . "]";},
+			$message);
 		}
-
-		return $this->_message;
 	}
 
-	/**
-	 * Returns a reference to the existing instance
-	 */
-	public static function ila_parser($message, $cache_id)
-	{
-		if (self::$_ila_parser === null)
-			self::$_ila_parser = new self($message, $cache_id);
-
-		return self::$_ila_parser;
-	}
+	return;
 }

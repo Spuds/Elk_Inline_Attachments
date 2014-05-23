@@ -156,8 +156,7 @@ function ila_integrate_pre_parsebbc(&$message, &$smileys, &$cache_id, &$parse_ta
 	if (!empty($modSettings['ila_enabled']) && empty($parse_tags) && empty($context['uninstalling']) && stripos($message, '[attach') !== false)
 	{
 		require_once(SUBSDIR . '/ILA.subs.php');
-		$ila_parser = ILA_Parse_BBC::ila_parser($message, $cache_id);
-		$message = $ila_parser->ila_hide_bbc();
+		ila_hide_bbc($message);
 	}
 }
 
@@ -178,8 +177,7 @@ function ila_integrate_post_parsebbc(&$message, &$smileys, &$cache_id, &$parse_t
 	// Enabled and we have tags, time to render them
 	if (!empty($modSettings['ila_enabled']) && empty($parse_tags) && empty($context['uninstalling']) && stripos($message, '[attach') !== false)
 	{
-		// There should be an instance already, use it
-		$ila_parser = ILA_Parse_BBC::ila_parser($message, $cache_id);
+		$ila_parser = new ILA_Parse_BBC($message, $cache_id);
 		$message = $ila_parser->ila_parse_bbc();
 	}
 }
