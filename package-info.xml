@@ -16,30 +16,34 @@
  */
 ]]></license>
 
-	<install for="1.0 Alpha - 1.0.99">
+	<install for="1.0 Beta - 1.0.99">
 		<readme type="file" parsebbc="true">readme.txt</readme>
 		<database>add_settings.php</database>
 		<modification>install.xml</modification>
 		<modification>language.xml</modification>
 		<require-file name="ILA.subs.php" destination="SUBSDIR">ILA Main program</require-file>
 		<require-file name="ILA.integration.php" destination="SOURCEDIR">ILA Integration functions</require-file>
-		<require-file name="ila.js" destination="THEMEDIR/scripts">Small javascript support file</require-file>
 		<hook hook="integrate_bbc_codes" file="SOURCEDIR/ILA.integration.php" function="ila_bbc_add_code"/>
 		<hook hook="integrate_sa_modify_modifications" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_sa_modify_modifications"/>
 		<hook hook="integrate_admin_areas" file="SOURCEDIR/ILA.integration.php" function="iaa_member_awards"/>
 		<hook hook="integrate_pre_include" file="SOURCEDIR/ILA.integration.php" />
+		<hook hook="integrate_pre_parsebbc" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_pre_parsebbc"/>
+		<hook hook="integrate_post_parsebbc" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_post_parsebbc"/>
+
 		<redirect url="index.php?action=admin;area=modsettings;sa=ila" timeout="5000">redirect.txt</redirect>
 	</install>
 
-	<uninstall for="1.0 Alpha - 1.0.99">
+	<uninstall for="1.0 Beta - 1.0.99">
 		<modification reverse="true">install.xml</modification>
 		<modification reverse="true">language.xml</modification>
 		<hook reverse="true" hook="integrate_bbc_codes" file="SOURCEDIR/ILA_integration.php" function="ila_bbc_add_code"/>
 		<hook reverse="true" hook="integrate_sa_modify_modifications" file="SOURCEDIR/ILA.integration.php" function="ila_sa_integrate_modify_modifications"/>
 		<hook reverse="true" hook="integrate_admin_areas" file="SOURCEDIR/ILA.integration.php" function="iaa_member_awards"/>
 		<hook reverse="true" hook="integrate_pre_include" file="SOURCEDIR/ILA.integration.php" />
+		<hook reverse="true" hook="integrate_pre_parsebbc" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_pre_parsebbc"/>
+		<hook reverse="true" hook="integrate_post_parsebbc" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_post_parsebbc"/>
+
 		<remove-file name="SUBSDIR/ILA.subs.php" />
 		<remove-file name="SOURCEDIR/ILA.integration.php" />
-		<remove-file name="THEMEDIR/scripts/ila.js" />
 	</uninstall>
 </package-info>

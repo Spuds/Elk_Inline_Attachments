@@ -134,3 +134,42 @@ function ila_settings()
 
 	Settings_Form::prepare_db($config_vars);
 }
+
+/**
+ * Subs hook, integrate_pre_parsebbc
+ *
+ * - Allow addons access before entering the main parse_bbc loop
+ *
+ * @param string $message
+ * @param smixed[] $smileys
+ * @param string $cache_id
+ * @param string[]|null $parse_tags
+ */
+function ila_integrate_pre_parsebbc(&$message, &$smileys, &$cache_id, &$parse_tags)
+{
+	global $context, $modSettings;
+
+	if (empty($parse_tags) && empty($context['uninstalling']) && !empty($modSettings['ila_enabled']) && strpos($message, '[attach') !== false)
+		ila_hide_bbc($message);
+}
+
+/**
+ * Subs hook, integrate_post_parsebbc
+ *
+ * - Allow addons access to what parse_bbc created
+ *
+ * @param string $message
+ * @param smixed[] $smileys
+ * @param string $cache_id
+ * @param string[]|null $parse_tags
+ */
+function ila_integrate_post_parsebbc(&$message, &$smileys, &$cache_id, &$parse_tags)
+{
+	global $context;
+
+	if (!empty($modSettings['ila_enabled']) && empty($parse_tags) && empty($context['uninstalling']))
+	{
+		if (stripos($message, '[attach') !== false)
+			ila_parse_bbc($message, $cache_id);
+	}
+}

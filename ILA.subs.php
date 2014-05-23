@@ -3,7 +3,7 @@
 /**
  * @name      Inline Attachments (ILA)
  * @license   Mozilla Public License version 1.1 http://www.mozilla.org/MPL/1.1/.
- * @author Spuds
+ * @author    Spuds
  * @copyright (c) 2014 Spuds
  *
  * @version   1.0
