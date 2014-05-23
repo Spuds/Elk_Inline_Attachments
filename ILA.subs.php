@@ -61,7 +61,7 @@ class ILA_Parse_BBC
 
 	/**
 	 * Pointer to the attachment ID to use as we loop through a message using sequential [attach] method
-	 * @var ing
+	 * @var int
 	 */
 	protected $_start_num = 0;
 
@@ -152,7 +152,7 @@ class ILA_Parse_BBC
 			}
 		}
 
-		// Take care of any attach links that reside in quote blocks, we must render these out first
+		// Take care of any attach links that reside in quote blocks, we must render these first
 		$this->_ila_find_nested();
 
 		// Find all of the inline attach tags in this message
@@ -521,7 +521,7 @@ class ILA_Parse_BBC
 				break;
 			// [attach=xx] or [attach]
 			case 'none':
-				// If a thumbnail is available use it, if not create one and use it
+				// If a thumbnail is available use it, if not create an html one and use it
 				if ($this->_curr_tag['width'] != '' && $this->_attachment['thumbnail']['has_thumb'])
 					$this->_curr_tag['width'] = min($this->_curr_tag['width'], isset($this->_attachment['real_width']) ? $this->_attachment['real_width'] : (isset($modSettings['attachmentThumbWidth']) ? $modSettings['attachmentThumbWidth'] : 160));
 				elseif ($this->_attachment['thumbnail']['has_thumb'])
@@ -540,7 +540,7 @@ class ILA_Parse_BBC
 							<img src="' . $this->_attachment['thumbnail']['href'] . '" alt="' . $uniqueID . '" title="' . $ila_title . '" id="thumb_' . $uniqueID . '"  style="width:' . $this->_curr_tag['width'] . 'px;" />
 						</a>';
 				else
-					$inlinedtext = $this->ila_createfakethumb($uniqueID);
+					$inlinedtext = $this->ila_create_html_thumb($uniqueID);
 				break;
 			// [attachurl=xx] -- no image, just a link with size/view details type = url
 			case 'url':
@@ -561,11 +561,11 @@ class ILA_Parse_BBC
 	/**
 	 * ila_createfakethumb()
 	 *
-	 * Creates the h tml sized thumbnail if none exists
+	 * Creates the html sized thumbnail if none exists
 	 *
 	 * @param int $uniqueID
 	 */
-	private function ila_createfakethumb($uniqueID)
+	private function ila_create_html_thumb($uniqueID)
 	{
 		global $modSettings, $context;
 
