@@ -293,7 +293,7 @@ class ILA_Parse_BBC
 
 		// Regexs to seach the message for quotes, nested quotes and quoted text, and tags
 		$regex = array();
-		$regex['quotelinks'] = '~<div\b[^>]*class="topslice_quote">(?:.*?)</div>~si';
+		$regex['quotelinks'] = '~<div\b[^>]*class="quoteheader">(?:.*?)</div>~si';
 		$regex['ila'] = '~\[attach\s*?(.*?(?:".+?")?.*?|.*?)\][\r\n]?~i';
 
 		// Break up the quotes on the endtags, this way we will get *all* the needed text
@@ -315,7 +315,7 @@ class ILA_Parse_BBC
 			$quote_count = $quote_count - $blockquote_count;
 
 			// $quote_count will control the while, but belt and suspenders here we keep a
-			// loop count to stop a run away ....
+			// loop count to stop any potential run away, don't trust the data !
 			$loop += -1;
 
 			// If this has blockquotes, we have work to do, we will have a nesting level of blockquote_count
@@ -356,7 +356,11 @@ class ILA_Parse_BBC
 							$this->_ila_get_topic();
 						else
 							$this->_topic = $context['current_topic'];
-						$linktoquotedmsg = '<a href="' . $scripturl . '/topic,' . $this->_topic . '.' . $msg_id . '.html#' . $msg_id . '">' . $txt['ila_quote_link'] . '</a>';
+
+						$linktoquotedmsg = '
+							<a href="' . $scripturl . '/topic,' . $this->_topic . '.' . $msg_id . '.html#' . $msg_id . '">
+								' . $txt['ila_quote_link'] . '
+							</a>';
 					}
 					else
 						$linktoquotedmsg = $txt['ila_quote_nolink'];
@@ -369,15 +373,17 @@ class ILA_Parse_BBC
 						// We have found an ila tag, in this quoted message section
 						$ila_string = $quotes[$i];
 
-						// replace the ila attach tag with the link back to the message that was quoted
+						// Replace the ila attach tag with the link back to the message that was quoted
 						foreach ($ila_tags[0] as $id => $ila_replace)
 							$ila_string = $this->ila_str_replace_once($ila_replace, $linktoquotedmsg, $ila_string);
 
 						// At last the final step, sub in the attachment link
 						$this->_message = str_replace($quotes[$i], $ila_string, $this->_message);
 					}
+
 					$which_link++;
 				}
+
 				$start += $blockquote_count;
 			}
 		}
@@ -480,6 +486,12 @@ class ILA_Parse_BBC
 		return $inlinedtext;
 	}
 
+	/**
+	 * Builds the actual tag that will be inserted in place of the ILA tag
+	 *
+	 * @param string $uniqueID
+	 * @return string
+	 */
 	private function ila_build_img_tag($uniqueID)
 	{
 		global $txt, $context, $modSettings, $settings;
