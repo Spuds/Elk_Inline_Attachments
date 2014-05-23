@@ -21,7 +21,7 @@ if (!defined('ELK'))
  * Searches a post for all ila tags and trys to replace them with the destinations
  * image, link, etc
  */
-class ILA_Parse_BBC
+class In_Line_Attachment
 {
 	/**
 	 * Holds attach id's that have been inlined so they can be excluded from display below
@@ -614,7 +614,7 @@ class ILA_Parse_BBC
 	 * @param string $attachname
 	 * @param string $type
 	 * @param int $id
-	 * @param string
+	 * @param string $align
 	 * @param int $width
 	 */
 	private function ila_preview_inline($attachname, $type, $id, $align, $width)
@@ -751,7 +751,8 @@ class ILA_Parse_BBC
  *
  * Makes [attach tags invisible inside for certain bbc blocks like code, nobbc, etc
  *
- * @param string $hide_tags
+ * @param string $message
+ * @param string[] $hide_tags
  */
 function ila_hide_bbc(&$message, $hide_tags = '')
 {
