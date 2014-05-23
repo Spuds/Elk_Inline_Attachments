@@ -111,11 +111,11 @@ class ILA_Parse_BBC
 	{
 		global $modSettings, $context, $txt, $attachments;
 
-		require_once (SUBSDIR . '/Attachments.subs.php');
-
 		// Addon or BBC disabled, can't do anything !
 		if (empty($modSettings['ila_enabled']) || empty($modSettings['enableBBC']))
 			return $this->_message;
+
+		require_once (SUBSDIR . '/Attachments.subs.php');
 
 		// Previewing a modified message, check for a value in $_REQUEST['msg']
 		$this->_id_msg = empty($this->_id_msg) ? (isset($_REQUEST['msg']) ? (int) $_REQUEST['msg'] : -1) : $this->_id_msg;
@@ -129,11 +129,11 @@ class ILA_Parse_BBC
 		}
 
 		// Can't trust the $topic global due to portals and other integration
-		$this->_ila_get_topic($this->_id_msg);
+		list($this->_topic, $this->_board) = $this->_ila_get_topic($this->_id_msg);
 
 		// Lets make sure we have the attachments, for this message, to work with so we can get the context array
 		if (!isset($attachments[$this->_id_msg]))
-			$attachments[$this->_id_msg] = $this->ila_load_attachments();
+			$attachments[$this->_id_msg] = $this->ila_load_attachments($this->_id_msg);
 
 		// Now get the rest of the details for these attachments
 		$this->_ila_attachments_context = loadAttachmentContext($this->_id_msg);
@@ -311,13 +311,14 @@ class ILA_Parse_BBC
 		// Loop through the quote array
 		while ($quote_count > 0 && $loop > 0)
 		{
-			//  Get all the topslice quotes, they contain the links (or not) of the message that was quoted, each link represents a quoteblock
+			//  Get all the quoteheaders, they contain the links (or not) of the message that was quoted,
+			//  each link represents a quoteblock
 			$blockquote_count = preg_match_all($regex['quotelinks'], $quotes[$start], $links, PREG_SET_ORDER);
 			$quote_count = $quote_count - $blockquote_count;
 
 			// $quote_count will control the while, but belt and suspenders here we keep a
 			// loop count to stop any potential run away, don't trust the data !
-			$loop += -1;
+			$loop -= 1;
 
 			// If this has blockquotes, we have work to do, we will have a nesting level of blockquote_count
 			if (!empty($blockquote_count))
@@ -354,12 +355,12 @@ class ILA_Parse_BBC
 					if (!empty($quoted_msg_id))
 					{
 						if (!isset($context['current_topic']))
-							$this->_ila_get_topic($quoted_msg_id);
+							list($quote_topic, ) = $this->_ila_get_topic($quoted_msg_id);
 						else
-							$this->_topic = $context['current_topic'];
+							$quote_topic = $context['current_topic'];
 
 						$linktoquotedmsg = '
-							<a href="' . $scripturl . '/topic,' . $this->_topic . '.' . $quoted_msg_id . '.html#' . $quoted_msg_id . '">
+							<a href="' . $scripturl . '/topic,' . $quote_topic . '.' . $quoted_msg_id . '.html#' . $quoted_msg_id . '">
 								' . $txt['ila_quote_link'] . '
 							</a>';
 					}
@@ -675,8 +676,9 @@ class ILA_Parse_BBC
 	{
 		global $modSettings;
 
-		if (!array($msg_id))
+		if (!is_array($msg_id))
 			$msg_id = array($msg_id);
+
 		$attachments = array();
 
 		// With a message id and the topic we can fetch the attachments
@@ -697,8 +699,8 @@ class ILA_Parse_BBC
 		$db = database();
 
 		// Init
-		$this->_topic = -1;
-		$this->_board = null;
+		$topic = -1;
+		$board = null;
 
 		// No message is comlete without a topic and board, its like bread, peanut butter and jelly
 		if (!empty($msg_id))
@@ -714,9 +716,11 @@ class ILA_Parse_BBC
 				)
 			);
 			if ($db->num_rows($request) == 1)
-				list($this->_topic, $this->_board) = $db->fetch_row($request);
+				list($topic, $board) = $db->fetch_row($request);
 			$db->free_result($request);
 		}
+
+		return array($topic, $board);
 	}
 
 	/**
