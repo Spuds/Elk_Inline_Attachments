@@ -129,7 +129,7 @@ class ILA_Parse_BBC
 		}
 
 		// Can't trust the $topic global due to portals and other integration
-		$this->_ila_get_topic();
+		$this->_ila_get_topic($this->_id_msg);
 
 		// Lets make sure we have the attachments, for this message, to work with so we can get the context array
 		if (!isset($attachments[$this->_id_msg]))
@@ -211,6 +211,7 @@ class ILA_Parse_BBC
 	 *
 	 * @param string $data
 	 * @param int $ila_num
+	 * @return string
 	 */
 	private function ila_parse_bbc_tag($data, $ila_num)
 	{
@@ -339,26 +340,26 @@ class ILA_Parse_BBC
 				for ($i = $start; $i <= $end; $i++)
 				{
 					// Search the link to get the msg_id
-					$msg_id = '';
+					$quoted_msg_id = '';
 					$href_temp = array();
 					if (preg_match('~<a href="(?:.*)#(.*?)">~i', $links[$which_link][0], $href_temp) == 1)
-						$msg_id = $href_temp[1];
+						$quoted_msg_id = $href_temp[1];
 
 					// We either found the quoted msg id above or we did not, yes profound I know ....
 					// if none set the link to the first message of the thread.
-					if ($msg_id == '')
-						$msg_id = isset($context['topic_first_message']) ? $context['topic_first_message'] : '';
+					if (empty($quoted_msg_id))
+						$quoted_msg_id = isset($context['topic_first_message']) ? $context['topic_first_message'] : '';
 
 					// Build the link, we will replace any quoted ILA tags with this bad boy
-					if ($msg_id != '')
+					if (!empty($quoted_msg_id))
 					{
 						if (!isset($context['current_topic']))
-							$this->_ila_get_topic();
+							$this->_ila_get_topic($quoted_msg_id);
 						else
 							$this->_topic = $context['current_topic'];
 
 						$linktoquotedmsg = '
-							<a href="' . $scripturl . '/topic,' . $this->_topic . '.' . $msg_id . '.html#' . $msg_id . '">
+							<a href="' . $scripturl . '/topic,' . $this->_topic . '.' . $quoted_msg_id . '.html#' . $quoted_msg_id . '">
 								' . $txt['ila_quote_link'] . '
 							</a>';
 					}
@@ -396,7 +397,6 @@ class ILA_Parse_BBC
 	 *
 	 * - Does the actual replacement of the [attach tag with the img tag
 	 *
-	 * @param mixed[] $done
 	 * @param int $ila_num
 	 */
 	private function ila_showInline($ila_num)
@@ -561,17 +561,13 @@ class ILA_Parse_BBC
 	/**
 	 * ila_createfakethumb()
 	 *
-	 * Creates the html sized thumbnail if none exists
+	 * - Creates the html sized thumbnail if none exists
 	 *
 	 * @param int $uniqueID
 	 */
 	private function ila_create_html_thumb($uniqueID)
 	{
 		global $modSettings, $context;
-
-		// We were requested to show a thumbnail but none exists
-		$dst_width = '';
-		$inlinedtext = '';
 
 		// Get the attachment size
 		$src_width = $this->_attachment['real_width'];
@@ -694,8 +690,9 @@ class ILA_Parse_BBC
 	 * ila_get_topic()
 	 *
 	 * - Get the topic and board for a given message number, needed to check permissions
+	 * - Used to also get link details for quoted messages with attach tags in them
 	 */
-	private function _ila_get_topic()
+	private function _ila_get_topic($msg_id)
 	{
 		$db = database();
 
@@ -704,7 +701,7 @@ class ILA_Parse_BBC
 		$this->_board = null;
 
 		// No message is comlete without a topic and board, its like bread, peanut butter and jelly
-		if (!empty($this->_msg_id))
+		if (!empty($msg_id))
 		{
 			$request = $db->query('', '
 				SELECT
@@ -713,7 +710,7 @@ class ILA_Parse_BBC
 				WHERE id_msg = {int:msg}
 				LIMIT 1',
 				array(
-					'msg' => $this->_msg_id,
+					'msg' => $msg_id,
 				)
 			);
 			if ($db->num_rows($request) == 1)
@@ -725,7 +722,8 @@ class ILA_Parse_BBC
 	/**
 	 * ila_str_replace_once()
 	 *
-	 * - Looks for the first occurence of $needle in $haystack and replaces it with $replace, this is a single replace
+	 * - Looks for the first occurence of $needle in $haystack and replaces it with $replace,
+	 * this is a single replace
 	 *
 	 * @param string $needle
 	 * @param string $replace
@@ -739,6 +737,7 @@ class ILA_Parse_BBC
 			// Nothing found
 			return $haystack;
 		}
+
 		return substr_replace($haystack, $replace, $pos, strlen($needle));
 	}
 }
@@ -746,7 +745,7 @@ class ILA_Parse_BBC
 /**
  * ila_hide_bbc()
  *
- * Makes [attach tags invisible for certain bbc blocks like code, nobbc, etc
+ * Makes [attach tags invisible inside for certain bbc blocks like code, nobbc, etc
  *
  * @param string $hide_tags
  */
