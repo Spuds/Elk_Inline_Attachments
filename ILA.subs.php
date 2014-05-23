@@ -133,7 +133,7 @@ class ILA_Parse_BBC
 
 		// Lets make sure we have the attachments, for this message, to work with so we can get the context array
 		if (!isset($attachments[$this->_id_msg]))
-			$attachments[$this->_id_msg] = $this->ila_load_attachments($this->_id_msg, $this->_topic, $this->_board);
+			$attachments[$this->_id_msg] = $this->ila_load_attachments();
 
 		// Now get the rest of the details for these attachments
 		$this->_ila_attachments_context = loadAttachmentContext($this->_id_msg);
@@ -170,7 +170,7 @@ class ILA_Parse_BBC
 			if (!allowedTo('view_attachments', $this->_board))
 			{
 				$this->_message = preg_replace_callback('~\[attach\s*?(.*?(?:".+?")?.*?|.*?)\][\r\n]?~i',
-				function() use($context) {return $context['user']['is_guest'] ? $txt['ila_forbidden_for_guest'] : $txt['ila_nopermission'];},
+				function() use($context, $txt) {return $context['user']['is_guest'] ? $txt['ila_forbidden_for_guest'] : $txt['ila_nopermission'];},
 				$this->_message);
 			}
 			else
