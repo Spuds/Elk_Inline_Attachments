@@ -12,18 +12,6 @@
 	<id>spuds:ILA</id>
 	<version>1.0</version>
 
-<file name="THEMEDIR/Display.template.php">
-	<operation>
-		<search position="after"><![CDATA[		if ($attachment['is_image'])]]></search>
-		<add><![CDATA[
-		// ILA in line attachment changes
-		if (isset($context['ila_dont_show_attach_below']) && array_key_exists($attachment['id'], $context['ila_dont_show_attach_below']))
-			continue;
-]]></add>
-	</operation>
-</file>
-
-
 <file name="THEMEDIR/Post.template.php">
 	<operation error="ignore">
 		<search position="replace" error="ignore"><![CDATA[		foreach ($context['current_attachments'] as $attachment)
