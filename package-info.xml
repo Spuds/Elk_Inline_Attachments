@@ -29,7 +29,7 @@
 		<hook hook="integrate_pre_include" file="SOURCEDIR/ILA.integration.php" />
 		<hook hook="integrate_pre_parsebbc" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_pre_parsebbc"/>
 		<hook hook="integrate_post_parsebbc" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_post_parsebbc"/>
-
+		<hook hook="integrate_prepare_display_context" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_prepare_display_context"/>
 		<redirect url="index.php?action=admin;area=addonsettings;sa=ila" timeout="5000">redirect.txt</redirect>
 	</install>
 
@@ -42,7 +42,7 @@
 		<hook reverse="true" hook="integrate_pre_include" file="SOURCEDIR/ILA.integration.php" />
 		<hook reverse="true" hook="integrate_pre_parsebbc" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_pre_parsebbc"/>
 		<hook reverse="true" hook="integrate_post_parsebbc" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_post_parsebbc"/>
-
+		<hook reverse="true" hook="integrate_prepare_display_context" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_prepare_display_context"/>
 		<remove-file name="SUBSDIR/ILA.subs.php" />
 		<remove-file name="SOURCEDIR/ILA.integration.php" />
 	</uninstall>
