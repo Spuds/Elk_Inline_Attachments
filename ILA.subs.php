@@ -90,7 +90,7 @@ class In_Line_Attachment
 	protected $_curr_tag = array();
 
 	/**
-	 * contstuctor, loads the message an id in to the class
+	 * Contstuctor, loads the message an id in to the class
 	 *
 	 * @param string $message
 	 * @param int|null $id_msg
@@ -113,8 +113,8 @@ class In_Line_Attachment
 	{
 		global $modSettings, $context, $txt, $attachments;
 
-		// Addon or BBC disabled, or comming in from the boardindex, dont do anything
-		if (empty($modSettings['ila_enabled']) || empty($modSettings['enableBBC']) || $context['current_action'] === 'boardindex')
+		// Addon or BBC disabled, or comming in from areas we don't want to work on
+		if (empty($modSettings['ila_enabled']) || empty($modSettings['enableBBC']) || (isset($context['site_action']) && in_array($context['site_action'], array('boardindex', 'messageindex'))))
 			return $this->_message;
 
 		// Previewing a modified message, check for a value in $_REQUEST['msg']
@@ -131,14 +131,17 @@ class In_Line_Attachment
 		// Can't trust the $topic global due to portals and other integration
 		list($this->_topic, $this->_board) = $this->_ila_get_topic($this->_id_msg);
 
-		// Lets make sure we have the attachments, for this message, to work with so we can get the context array
+		// Lets make sure we have the attachments
+		require_once(SUBSDIR . '/Attachments.subs.php');
 		if (!isset($attachments[$this->_id_msg]))
 		{
-			require_once(SUBSDIR . '/Attachments.subs.php');
-			$attachments = $this->ila_load_attachments($this->_id_msg);
+			if (is_array($attachments))
+				$attachments += $this->ila_load_attachments();
+			else
+				$attachments = $this->ila_load_attachments();
 		}
 
-		// Now get the rest of the details for these attachments
+		// Get the rest of the details for the message attachments
 		$this->_ila_attachments_context = loadAttachmentContext($this->_id_msg);
 
 		// Do we have new, not yet uploaded, attachments in either a new or a modified message (preview)?
@@ -196,7 +199,7 @@ class In_Line_Attachment
 					// - The tags in the message but there is no attachments, perhaps the attachment did not upload correctly
 					// - The user put the tag in wrong because they are rock dumb and did not read our fantastic help,
 					// just kidding, really the help is not that good.
-					// - They don't have premission to view attachments in that board
+					// - They don't have premission to view attachments in that board or the admin has disable attacments
 					foreach ($ila_tags[1] as $id => $ila_replace)
 						$this->_message = $this->ila_str_replace_once($ila_tags[0][$id], $txt['ila_invalid'], $this->_message);
 				}
@@ -204,7 +207,7 @@ class In_Line_Attachment
 		}
 
 		// Keep track of what we have used inline so its not shown below
-		$context['ila_dont_show_attach_below'] = $this->_ila_dont_show_attach_below;
+		$context['ila_dont_show_attach_below'][$this->_id_msg] = $this->_ila_dont_show_attach_below;
 
 		return $this->_message;
 	}
@@ -261,10 +264,7 @@ class In_Line_Attachment
 
 		// like [attach] -> attach=1 by assuming attachments are sequentally placed in the
 		// topic and sub in the attachment index increment
-		if (is_numeric($this->_curr_tag['id']))
-			// Remove this attach choice since we have used it
-			$this->_ila_attachments = array_diff($this->_ila_attachments, array($this->_curr_tag['id']));
-		else
+		if (!is_numeric($this->_curr_tag['id']))
 		{
 			// Take the first un-used attach number and use it
 			$this->_curr_tag['id'] = array_shift($this->_ila_attachments);
@@ -272,6 +272,9 @@ class In_Line_Attachment
 			// Stick it back on the end in case we need to loop around
 			array_push($this->_ila_attachments, $this->_curr_tag['id']);
 		}
+		// Standard =x, Remove this from the [attach] choice since we have used it
+		else
+			$this->_ila_attachments = array_diff($this->_ila_attachments, array($this->_curr_tag['id']));
 
 		// Replace this tag with the inlined attachment
 		$result = $this->ila_showInline($ila_num);
@@ -350,18 +353,17 @@ class In_Line_Attachment
 					$quoted_msg_id = '';
 					$href_temp = array();
 					if (preg_match('~<a href="(?:.*)#(.*?)">~i', $links[$which_link][0], $href_temp) == 1)
-						$quoted_msg_id = str_replace('msg', '', $href_temp[1]);
-
+						$quoted_msg_id = $href_temp[1];
 					// We either found the quoted msg id above or we did not, yes profound I know ....
 					// if none set the link to the first message of the thread.
-					if (empty($quoted_msg_id))
+					else
 						$quoted_msg_id = isset($context['topic_first_message']) ? $context['topic_first_message'] : '';
 
 					// Build the link, we will replace any quoted ILA tags with this bad boy
 					if (!empty($quoted_msg_id))
 					{
 						if (!isset($context['current_topic']))
-							list($quote_topic, ) = $this->_ila_get_topic($quoted_msg_id);
+							list($quote_topic, ) = $this->_ila_get_topic(str_replace('msg', '', $quoted_msg_id));
 						else
 							$quote_topic = $context['current_topic'];
 
@@ -498,6 +500,7 @@ class In_Line_Attachment
 		global $txt, $context, $modSettings, $settings;
 
 		$inlinedtext = '';
+		$fb_link = 'rel="gallery_msg_' . $this->_id_msg . '_footer"';
 
 		switch ($this->_curr_tag['type'])
 		{
@@ -514,7 +517,7 @@ class In_Line_Attachment
 				// Insert the correct image tag, clickable or just a full image
 				if ($this->_curr_tag['width'] < $this->_attachment['real_width'])
 					$inlinedtext = '
-						<a href="' . $this->_attachment['href'] . ';image" id="link_' . $uniqueID . '" onclick="' . $this->_attachment['thumbnail']['javascript'] . '">
+						<a href="' . $this->_attachment['href'] . ';image" id="link_' . $uniqueID . '" ' . $fb_link . ' onclick="' . $this->_attachment['thumbnail']['javascript'] . '">
 							<img src="' . $this->_attachment['href'] . ';image" alt="' . $uniqueID . '" title="' . $ila_title . '" id="thumb_' . $uniqueID . '" style="width:' . $this->_curr_tag['width'] . 'px;" />
 						</a>';
 				else
@@ -537,7 +540,7 @@ class In_Line_Attachment
 				// Now with the width defined insert the thumbnail if available or create an html resized one
 				if ($this->_attachment['thumbnail']['has_thumb'])
 					$inlinedtext = '
-						<a href="' . $this->_attachment['href'] . ';image" id="link_' . $uniqueID . '" onclick="' . $this->_attachment['thumbnail']['javascript'] . '">
+						<a href="' . $this->_attachment['href'] . ';image" id="link_' . $uniqueID . '" ' . $fb_link . ' onclick="' . $this->_attachment['thumbnail']['javascript'] . '">
 							<img src="' . $this->_attachment['thumbnail']['href'] . '" alt="' . $uniqueID . '" title="' . $ila_title . '" id="thumb_' . $uniqueID . '"  style="width:' . $this->_curr_tag['width'] . 'px;" />
 						</a>';
 				else
@@ -670,16 +673,15 @@ class In_Line_Attachment
 	 * ila_load_attachments()
 	 *
 	 * - Loads attachments for a given msg if they have not yet been loaded
+	 * - Attachments must be enabled and user allowed to see attachments
 	 *
 	 * @param int $msg_id
 	 */
-	private function ila_load_attachments($msg_id)
+	private function ila_load_attachments()
 	{
 		global $modSettings;
 
-		if (!is_array($msg_id))
-			$msg_id = array($msg_id);
-
+		$msg_id = array($this->_id_msg);
 		$attachments = array();
 
 		// With a message id and the topic we can fetch the attachments
