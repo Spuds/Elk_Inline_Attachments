@@ -1,0 +1,22 @@
+.ila_align_right {
+	float: right;
+	margin: .5ex 1ex 1ex 1ex;
+}
+
+.ila_align_left {
+	float: left;
+	margin: .5ex 1ex 1ex 1ex;
+}
+
+.ila_align_center {
+	width: 100%;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.ila_preview {
+	display: inline-block;
+	background: white;
+	border:1px solid #000;
+	vertical-align:bottom;
+}

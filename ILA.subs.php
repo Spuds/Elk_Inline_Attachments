@@ -456,11 +456,9 @@ class In_Line_Attachment
 			// Create the image tag based off the type given
 			$inlinedtext = $this->ila_build_img_tag($uniqueID);
 
-			// Handle the align tag if it was supplied, should move this to CSS yes
-			if ($this->_curr_tag['align'] == 'left' || $this->_curr_tag['align'] == 'right')
-				$inlinedtext = '<div style="float: ' . $this->_curr_tag['align'] . ';margin: .5ex 1ex 1ex 1ex;">' . $inlinedtext . '</div>';
-			elseif ($this->_curr_tag['align'] == 'center')
-				$inlinedtext = '<div style="width: 100%;margin: 0 auto;text-align: center">' . $inlinedtext . '</div>';
+			// Handle the align tag if it was supplied.
+			if ($this->_curr_tag['align'] == 'left' || $this->_curr_tag['align'] == 'right' || $this->_curr_tag['align'] == 'center')
+				$inlinedtext = '<div class="ila_align_' . $this->_curr_tag['align'] . '">' . $inlinedtext . '</div>';
 
 			// Keep track of the attachments we have in-lined so we can exclude them from being displayed in the post footers
 			$this->_ila_dont_show_attach_below[$this->_attachment['id']] = 1;
@@ -517,10 +515,10 @@ class In_Line_Attachment
 				if ($this->_curr_tag['width'] < $this->_attachment['real_width'])
 					$inlinedtext = '
 						<a href="' . $this->_attachment['href'] . ';image" id="link_' . $uniqueID . '" onclick="' . $this->_attachment['thumbnail']['javascript'] . '">
-							<img src="' . $this->_attachment['href'] . ';image" alt="' . $uniqueID . '" title="' . $ila_title . '" id="thumb_' . $uniqueID . '" style="width:' . $this->_curr_tag['width'] . 'px;border:0;" />
+							<img src="' . $this->_attachment['href'] . ';image" alt="' . $uniqueID . '" title="' . $ila_title . '" id="thumb_' . $uniqueID . '" style="width:' . $this->_curr_tag['width'] . 'px;" />
 						</a>';
 				else
-					$inlinedtext = '<img src="' . $this->_attachment['href'] . ';image" alt="" title="' . $ila_title . '" id="thumb_' . $uniqueID . '" style="width:' . $this->_curr_tag['width'] . 'px;border:0;" />';
+					$inlinedtext = '<img src="' . $this->_attachment['href'] . ';image" alt="" title="' . $ila_title . '" id="thumb_' . $uniqueID . '" style="width:' . $this->_curr_tag['width'] . 'px;" />';
 				break;
 			// [attach=xx] or [attach]
 			case 'none':
@@ -599,7 +597,7 @@ class In_Line_Attachment
 		if ($dst_width < $src_width || $dst_height < $src_height)
 			$inlinedtext = '
 				<a href="' . $this->_attachment['href'] . ';image" id="link_' . $uniqueID . '" onclick="return expandThumb(\'' . $uniqueID . '\');">
-					<img src="' . $this->_attachment['href'] . '" alt="' . $uniqueID . '" title="' . $ila_title . '" style="width:' . $dst_width . 'px;height:' . $dst_height . 'border:0;" id="thumb_' . $uniqueID . '" />
+					<img src="' . $this->_attachment['href'] . '" alt="' . $uniqueID . '" title="' . $ila_title . '" style="width:' . $dst_width . 'px; height:' . $dst_height . ';" id="thumb_' . $uniqueID . '" />
 				</a>';
 		else
 			$inlinedtext = '
@@ -638,7 +636,7 @@ class In_Line_Attachment
 					$width = !empty($modSettings['max_image_width']) ? min($width, $modSettings['max_image_width']) : $width;
 				else
 					$width = !empty($modSettings['max_image_width']) ? min($modSettings['max_image_width'], 400) : 160;
-				$inlinedtext = '<div style="display:-moz-inline-box;display:inline-block;background: white;width:' . $width . 'px;height:' . floor($width / 1.333) . 'px;border:1px solid #000;vertical-align:bottom;">[Attachment:' . $id . ': <strong>' . $attachname . '</strong> ' . $txt[$txt_name] . ']</div>';
+				$inlinedtext = '<div class="ila_preview" style="width:' . $width . 'px; height:' . floor($width / 1.333) . 'px;">[Attachment:' . $id . ': <strong>' . $attachname . '</strong> ' . $txt[$txt_name] . ']</div>';
 				break;
 			// [attach=xx] or depreciated [attachthumb=xx]-- thumbnail
 			case 'none':
@@ -646,7 +644,7 @@ class In_Line_Attachment
 					$width = min($width, isset($modSettings['attachmentThumbWidth']) ? $modSettings['attachmentThumbWidth'] : 160);
 				else
 					$width = isset($modSettings['attachmentThumbWidth']) ? $modSettings['attachmentThumbWidth'] : 160;
-				$inlinedtext = '<div style="display:-moz-inline-box;display:inline-block;background: white;width:' . $width . 'px;height:' . floor($width / 1.333) . 'px;border:1px solid #000;vertical-align:bottom;">[Attachment:' . $id . ': <strong>' . $attachname . '</strong> ' . $txt[$txt_name] . ']</div>';
+				$inlinedtext = '<div class="ila_preview" style="width:' . $width . 'px; height:' . floor($width / 1.333) . 'px;">[Attachment:' . $id . ': <strong>' . $attachname . '</strong> ' . $txt[$txt_name] . ']</div>';
 				break;
 			// [attachurl=xx] -- no image, just a link with size/view details type = url
 			case 'url':
@@ -659,10 +657,8 @@ class In_Line_Attachment
 		}
 
 		// Handle the align tag if it was supplied
-		if ($align == 'left' || $align == 'right')
-			$inlinedtext = '<div style="float:' . $align . ';margin: .5ex 1ex 1ex 1ex;">' . $inlinedtext . '</div>';
-		elseif ($align == 'center')
-			$inlinedtext = '<div style="width:100%;margin:0 auto;text-align:center">' . $inlinedtext . '</div>';
+		if ($align === 'left' || $align === 'right' || $align === 'center')
+			$inlinedtext = '<div class="' . $align . '">' . $inlinedtext . '</div>';
 
 		return $inlinedtext;
 	}

@@ -200,3 +200,13 @@ function ila_integrate_prepare_display_context(&$output)
 			unset($output['attachment'][$id]);
 	}
 }
+
+/**
+ * integrate_load_theme called from load.php
+ *
+ * used to add theme files, etc
+ */
+function ila_integrate_load_theme()
+{
+	loadCSSFile('ila.css');
+}
