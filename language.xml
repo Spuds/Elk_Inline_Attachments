@@ -8,7 +8,7 @@
 		<search position="end" />
 		<add><![CDATA[
 		
-//Begin ILA in line attachment changes
+// Begin ILA in line attachment changes
 $txt['mods_cat_modifications_ila'] = 'In Line Attachments';
 $txt['ila_desc'] = 'This section allows you to setup the In Line Attachment modification';
 $txt['ila_enabled'] = '(ILA) Enable the in line attachment modification';
@@ -34,7 +34,7 @@ $txt['ila_none'] = 'as expandable thumbnail';
 $txt['ila_img'] = 'as full-size graphic';
 $txt['ila_url'] = 'as a link';
 $txt['ila_mini'] = 'as a compact link';
-//End ILA in line attachment changes
+// End ILA in line attachment changes
 ]]></add>
 	</operation>
 </file>
@@ -42,7 +42,7 @@ $txt['ila_mini'] = 'as a compact link';
 <file name="LANGUAGEDIR/english/Help.english.php">
 	<operation>
 		<search position="end" />
-		<add><![CDATA[//ILA in line attachment changes
+		<add><![CDATA[// ILA in line attachment changes
 $helptxt['ILA_InLineAttachments_help'] = '<b>Add an inline attachment</b><br />
 		Example:
 		<br /><b>[attachimg=1 align=left width=400]</b>
@@ -91,7 +91,7 @@ $helptxt['ILA_InLineAttachments_help'] = '<b>Add an inline attachment</b><br />
             Repeat the steps for each attachment you want to upload. Move and edit the tags in the message body to suit your needs.
         </p>
 ';
-//End ILA in line attachment changes
+// End ILA in line attachment changes
 			]]></add>
 	</operation>
 </file>

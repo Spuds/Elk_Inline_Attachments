@@ -111,11 +111,9 @@ class In_Line_Attachment
 	{
 		global $modSettings, $context, $txt, $attachments;
 
-		// Addon or BBC disabled, can't do anything !
-		if (empty($modSettings['ila_enabled']) || empty($modSettings['enableBBC']))
+		// Addon or BBC disabled, or comming in from the boardindex, dont do anything
+		if (empty($modSettings['ila_enabled']) || empty($modSettings['enableBBC']) || $context['current_action'] === 'boardindex')
 			return $this->_message;
-
-		require_once (SUBSDIR . '/Attachments.subs.php');
 
 		// Previewing a modified message, check for a value in $_REQUEST['msg']
 		$this->_id_msg = empty($this->_id_msg) ? (isset($_REQUEST['msg']) ? (int) $_REQUEST['msg'] : -1) : $this->_id_msg;
@@ -133,7 +131,10 @@ class In_Line_Attachment
 
 		// Lets make sure we have the attachments, for this message, to work with so we can get the context array
 		if (!isset($attachments[$this->_id_msg]))
-			$attachments[$this->_id_msg] = $this->ila_load_attachments($this->_id_msg);
+		{
+			require_once(SUBSDIR . '/Attachments.subs.php');
+			$attachments = $this->ila_load_attachments($this->_id_msg);
+		}
 
 		// Now get the rest of the details for these attachments
 		$this->_ila_attachments_context = loadAttachmentContext($this->_id_msg);
@@ -144,7 +145,7 @@ class In_Line_Attachment
 			$this->_start_num = isset($attachments[$this->_id_msg]) ? count($attachments[$this->_id_msg]) : 0;
 			$ila_temp = explode(',', $_REQUEST['ila']);
 
-			// Add thme at the end of the currenlty uploaded attachment count index
+			// Add thme at the end of the currently uploaded attachment count index
 			foreach ($ila_temp as $new_attach)
 			{
 				$this->_start_num++;
@@ -163,7 +164,7 @@ class In_Line_Attachment
 		if (preg_match_all('~\[attach\s*?(.*?(?:".+?")?.*?|.*?)\][\r\n]?~i', $this->_message, $ila_tags))
 		{
 			// Load a simple array of elements.  We use it to keep track of attachment number usage in the message body
-			$this->_ila_attachments = !empty($this->_start_num) ? range(1, $this->_start_num) : range(1, count($attachments[$this->_id_msg]));
+			$this->_ila_attachments = !empty($this->_start_num) ? range(1, $this->_start_num) : range(1, isset($attachments[$this->_id_msg]) ? count($attachments[$this->_id_msg]) : 0);
 			$ila_num = 0;
 
 			// If they have no permissions to view attachments then we sub out the tag with the appropriate message
@@ -199,6 +200,9 @@ class In_Line_Attachment
 				}
 			}
 		}
+
+		// Keep track of what we have used inline so its not shown below
+		$context['ila_dont_show_attach_below'] = $this->_ila_dont_show_attach_below;
 
 		return $this->_message;
 	}
@@ -344,7 +348,7 @@ class In_Line_Attachment
 					$quoted_msg_id = '';
 					$href_temp = array();
 					if (preg_match('~<a href="(?:.*)#(.*?)">~i', $links[$which_link][0], $href_temp) == 1)
-						$quoted_msg_id = $href_temp[1];
+						$quoted_msg_id = str_replace('msg', '', $href_temp[1]);
 
 					// We either found the quoted msg id above or we did not, yes profound I know ....
 					// if none set the link to the first message of the thread.
@@ -426,10 +430,10 @@ class In_Line_Attachment
 						if (isset($this->_attachment['width']) && isset($this->_attachment['height']))
 							$this->_attachment['thumbnail']['javascript'] = 'return reqWin(\'' . $this->_attachment['href'] . ';image\', ' . ($this->_attachment['width'] + 20) . ', ' . ($this->_attachment['height'] + 20) . ', true);';
 						else
-							$this->_attachment['thumbnail']['javascript'] = 'return expandThumb(' . $this->_attachment['href'] . ');';
+							$this->_attachment['thumbnail']['javascript'] = 'return expandThumb(\'' . $this->_attachment['href'] . '\');';
 					}
 					else
-						$this->_attachment['thumbnail']['javascript'] = 'return expandThumb(' . $uniqueID . ');';
+						$this->_attachment['thumbnail']['javascript'] = 'return expandThumb(\'' . $uniqueID . '\');';
 				}
 
 				// Set up our private js call if needed
@@ -439,7 +443,7 @@ class In_Line_Attachment
 					if (((!empty($modSettings['max_image_width']) && $this->_attachment['real_width'] > $modSettings['max_image_width']) || (!empty($modSettings['max_image_height']) && $this->_attachment['real_height'] > $modSettings['max_image_height'])))
 						$this->_attachment['thumbnail']['javascript'] = $this->_attachment['thumbnail']['javascript'];
 					else
-						$this->_attachment['thumbnail']['javascript'] = 'return expandThumb(' . $uniqueID . ');';
+						$this->_attachment['thumbnail']['javascript'] = 'return expandThumb(\'' . $uniqueID . '\');';
 				}
 			}
 
@@ -596,7 +600,7 @@ class In_Line_Attachment
 		// Build the relacement string
 		if ($dst_width < $src_width || $dst_height < $src_height)
 			$inlinedtext = '
-				<a href="' . $this->_attachment['href'] . ';image" id="link_' . $uniqueID . '" onclick="return expandThumb(' . $uniqueID . ');">
+				<a href="' . $this->_attachment['href'] . ';image" id="link_' . $uniqueID . '" onclick="return expandThumb(\'' . $uniqueID . '\');">
 					<img src="' . $this->_attachment['href'] . '" alt="' . $uniqueID . '" title="' . $ila_title . '" style="width:' . $dst_width . 'px;height:' . $dst_height . 'border:0;" id="thumb_' . $uniqueID . '" />
 				</a>';
 		else
@@ -693,6 +697,8 @@ class In_Line_Attachment
 	 *
 	 * - Get the topic and board for a given message number, needed to check permissions
 	 * - Used to also get link details for quoted messages with attach tags in them
+	 *
+	 * @param int $msg_id
 	 */
 	private function _ila_get_topic($msg_id)
 	{
@@ -754,7 +760,7 @@ class In_Line_Attachment
  * @param string $message
  * @param string[] $hide_tags
  */
-function ila_hide_bbc(&$message, $hide_tags = '')
+function ila_hide_bbc(&$message, $hide_tags = array())
 {
 	global $modSettings;
 
@@ -763,7 +769,7 @@ function ila_hide_bbc(&$message, $hide_tags = '')
 		return;
 
 	// If our ila attach tags are nested inside of these tags we need to hide them so they don't execute
-	if ($hide_tags == '')
+	if (empty($hide_tags))
 		$hide_tags = array('code', 'html', 'php', 'noembed', 'nobbc');
 
 	// Look for each tag, if attach is found inside then replace its '[' with a hex

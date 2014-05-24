@@ -179,3 +179,25 @@ function ila_integrate_post_parsebbc(&$message, &$smileys, &$cache_id, &$parse_t
 		$message = $ila_parser->ila_parse_bbc();
 	}
 }
+
+/**
+ * Display controller hook, called from prepareDisplayContext_callback integrate_prepare_display_context
+ *
+ * - Drops attachments from the message if they were rendered inline
+ *
+ * @param mixed[] $output
+ */
+function ila_integrate_prepare_display_context(&$output)
+{
+	global $context;
+
+	if (empty($context['ila_dont_show_attach_below']))
+		return;
+
+	// If the attachment has been used inline, drop it so its now shown below the message as well
+	foreach ($output['attachment'] as $id => $attachcheck)
+	{
+		if (array_key_exists($attachcheck['id'], $context['ila_dont_show_attach_below']))
+			unset($output['attachment'][$id]);
+	}
+}
