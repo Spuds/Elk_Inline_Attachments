@@ -105,7 +105,6 @@ function ila_settings()
 
 	$config_vars = array(
 		array('check', 'ila_enabled'),
-		array('check', 'ila_alwaysfullsize'),
 		array('check', 'ila_basicmenu'),
 	);
 

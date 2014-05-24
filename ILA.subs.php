@@ -104,8 +104,10 @@ class In_Line_Attachment
 	/**
 	 * ila_parse_bbc()
 	 *
-	 * Traffic cop, checks permissions and finds all [attach tags, determins msg number, inits values
-	 * and calls needed functions to render ila tags
+	 * - Traffic cop
+	 * - Checks availablity
+	 * - Finds all [attach tags, determins msg number, inits values
+	 * - Calls needed functions to render ila tags
 	 */
 	public function ila_parse_bbc()
 	{
@@ -446,10 +448,6 @@ class In_Line_Attachment
 						$this->_attachment['thumbnail']['javascript'] = 'return expandThumb(\'' . $uniqueID . '\');';
 				}
 			}
-
-			// Fix any tag option incompatabilities
-			if (!empty($modSettings['ila_alwaysfullsize']))
-				$this->_curr_tag['type'] = 'img';
 
 			// Can't show an image for a non image attachment
 			if ((!$this->_attachment['is_image']) && (in_array($this->_curr_tag['type'], $images)))

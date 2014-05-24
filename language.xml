@@ -12,7 +12,6 @@
 $txt['mods_cat_modifications_ila'] = 'In Line Attachments';
 $txt['ila_desc'] = 'This section allows you to setup the In Line Attachment modification';
 $txt['ila_enabled'] = '(ILA) Enable the in line attachment modification';
-$txt['ila_alwaysfullsize'] = '(ILA) Force inline images to always be full size';
 $txt['ila_basicmenu'] = '(ILA) Only show basic ILA menu';
 $txt['ila_insert'] = 'Insert Attachment';
 $txt['ila_title'] = 'End-of-post expandable thumbnail ';
