@@ -153,7 +153,7 @@ function ila_integrate_pre_parsebbc(&$message, &$smileys, &$cache_id, &$parse_ta
 	if (!empty($modSettings['ila_enabled']) && empty($parse_tags) && empty($context['uninstalling']) && stripos($message, '[attach') !== false)
 	{
 		require_once(SUBSDIR . '/ILA.subs.php');
-		ila_hide_bbc($message);
+			ila_hide_bbc($message);
 	}
 }
 
@@ -190,13 +190,13 @@ function ila_integrate_prepare_display_context(&$output)
 {
 	global $context;
 
-	if (empty($context['ila_dont_show_attach_below']))
+	if (empty($context['ila_dont_show_attach_below'][$output['id']]))
 		return;
 
-	// If the attachment has been used inline, drop it so its now shown below the message as well
+	// If the attachment has been used inline, drop it so its not shown below the message as well
 	foreach ($output['attachment'] as $id => $attachcheck)
 	{
-		if (array_key_exists($attachcheck['id'], $context['ila_dont_show_attach_below']))
+		if (array_key_exists($attachcheck['id'], $context['ila_dont_show_attach_below'][$output['id']]))
 			unset($output['attachment'][$id]);
 	}
 }
@@ -208,5 +208,6 @@ function ila_integrate_prepare_display_context(&$output)
  */
 function ila_integrate_load_theme()
 {
-	loadCSSFile('ila.css');
+	if (!empty($modSettings['ila_enabled']))
+		loadCSSFile('ila.css');
 }
