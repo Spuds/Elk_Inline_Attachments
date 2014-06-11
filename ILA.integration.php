@@ -65,6 +65,9 @@ function ila_integrate_admin_areas(&$admin_areas)
 {
 	global $txt;
 
+	if (!isset($txt['mods_cat_modifications_ila']))
+		$txt['mods_cat_modifications_ila'] = '';
+
 	$admin_areas['config']['areas']['addonsettings']['subsections']['ila'] = array($txt['mods_cat_modifications_ila']);
 }
 
