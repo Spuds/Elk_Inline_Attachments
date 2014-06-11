@@ -211,6 +211,8 @@ function ila_integrate_prepare_display_context(&$output)
  */
 function ila_integrate_load_theme()
 {
+	global $modSettings;
+
 	if (!empty($modSettings['ila_enabled']))
 		loadCSSFile('ila.css');
 }
