@@ -101,7 +101,7 @@ function ila_settings()
 	$context[$context['admin_menu_name']]['tab_data']['tabs']['ila']['description'] = $txt['ila_desc'];
 
 	// Lets build a settings form
-	require_once(SUBSDIR . '/Settings.class.php');
+	require_once(SUBSDIR . '/SettingsForm.class.php');
 
 	// Instantiate the form
 	$ilaSettings = new Settings_Form();
