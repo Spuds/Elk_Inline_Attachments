@@ -1,47 +1,35 @@
-<?xml version="1.0"?>
-<!DOCTYPE modification SYSTEM "http://www.elkarte.net/site/modification">
-<modification xmlns="http://www.elkarte.net/site/modification" xmlns:elk="http://www.elkarte.net/">
-<id>spuds:ILA</id>
-	
-<file name="LANGUAGEDIR/english/Addons.english.php">
-	<operation>
-		<search position="end" />
-		<add><![CDATA[
+<?php
 		
-// Begin ILA in line attachment changes
+// ILA in line attachment admin settings
 $txt['mods_cat_modifications_ila'] = 'In Line Attachments';
 $txt['ila_desc'] = 'This section allows you to setup the In Line Attachment modification';
 $txt['ila_enabled'] = '(ILA) Enable the in line attachment modification';
 $txt['ila_basicmenu'] = '(ILA) Only show basic ILA menu';
+
+// ILA message viewing
+$txt['ila_invalid'] = ' [ Attachment Invalid Or Does Not Exist ] ';
+$txt['ila_disabled'] = ' [ Attachments Disabled ] ';
+$txt['ila_forbidden_for_guest'] = ' [ Guests cannot view attachments ] ';
+$txt['ila_nopermission'] = ' [ You are not authorized to view attachments ] ';
+$txt['ila_attachment_missing'] = ' [ Specified attachment is not available ]';
+$txt['ila_quote_link'] = ' (Attachment Link) ';
+$txt['ila_quote_nolink'] = ' (Attachment) ';
+
+// Post settings (when I implement the post interface)
 $txt['ila_insert'] = 'Insert Attachment';
 $txt['ila_title'] = 'End-of-post expandable thumbnail ';
 $txt['ila_option1'] = 'Inline expandable thumbnail';
 $txt['ila_option2'] = 'Inline full-size image';
 $txt['ila_option3'] = 'Inline text link';
 $txt['ila_option4'] = 'Inline short text link';
-$txt['ila_nopermission'] = ' [ You are not authorized to view attachments ] ';
-$txt['ila_invalid'] = ' [ Attachment Invalid Or Does Not Exist ] ';
-$txt['ila_disabled'] = ' [ Attachments Disabled ] ';
 $txt['ila_insert_next'] = ' in the message';
-$txt['ila_attachment_missing'] = ' [ Specified attachment is not available ]';
 $txt['ila_thereare'] = 'There are only';
 $txt['ila_attachment'] = 'attachment(s)';
-$txt['ila_forbidden_for_guest'] = ' [ Guests cannot view attachments ] ';
-$txt['ila_quote_link'] = ' (Attachment Link) ';
-$txt['ila_quote_nolink'] = ' (Attachment) ';
 $txt['ila_none'] = 'as expandable thumbnail';
 $txt['ila_img'] = 'as full-size graphic';
 $txt['ila_url'] = 'as a link';
 $txt['ila_mini'] = 'as a compact link';
-// End ILA in line attachment changes
-]]></add>
-	</operation>
-</file>
 
-<file name="LANGUAGEDIR/english/Help.english.php">
-	<operation>
-		<search position="end" />
-		<add><![CDATA[// ILA in line attachment changes
 $helptxt['ILA_InLineAttachments_help'] = '<b>Add an inline attachment</b><br />
 		Example:
 		<br /><b>[attachimg=1 align=left width=400]</b>
@@ -88,11 +76,4 @@ $helptxt['ILA_InLineAttachments_help'] = '<b>Add an inline attachment</b><br />
             Select the inline mode, if any, you want using the list box "Inline modes";
             <h4>Step 3 :</h4>
             Repeat the steps for each attachment you want to upload. Move and edit the tags in the message body to suit your needs.
-        </p>
-';
-// End ILA in line attachment changes
-			]]></add>
-	</operation>
-</file>
-
-</modification>
+        </p>';

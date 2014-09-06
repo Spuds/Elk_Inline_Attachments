@@ -65,6 +65,8 @@ function ila_integrate_admin_areas(&$admin_areas)
 {
 	global $txt;
 
+	loadLanguage('ILA');
+
 	if (!isset($txt['mods_cat_modifications_ila']))
 		$txt['mods_cat_modifications_ila'] = '';
 
@@ -98,6 +100,8 @@ function ila_settings()
 {
 	global $txt, $scripturl, $context;
 
+	loadLanguage('ILA');
+
 	$context[$context['admin_menu_name']]['tab_data']['tabs']['ila']['description'] = $txt['ila_desc'];
 
 	// Lets build a settings form
@@ -118,12 +122,6 @@ function ila_settings()
 	if (isset($_GET['save']))
 	{
 		checkSession();
-
-		// Enabling the addon then lets have the main file available, otherwise lets not ;)
-		if (isset($_POST['ila_enabled']))
-			add_integration_function('integrate_pre_include', 'SOURCEDIR/ILA.subs.php');
-		else
-			remove_integration_function('integrate_pre_include', 'SOURCEDIR/ILA.subs.php');
 
 		Settings_Form::save_db($config_vars);
 		redirectexit('action=admin;area=addonsettings;sa=ila');
@@ -214,5 +212,5 @@ function ila_integrate_load_theme()
 	global $modSettings;
 
 	if (!empty($modSettings['ila_enabled']))
-		loadCSSFile('ila.css');
+		loadCSSFile('ILA.css');
 }

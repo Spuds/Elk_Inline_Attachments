@@ -16,14 +16,14 @@
  */
 ]]></license>
 
-	<install for="1.0 RC2 - 1.0.99">
+	<install for="1.0 - 1.0.99">
 		<readme type="file" parsebbc="true">readme.txt</readme>
 		<database>add_settings.php</database>
 		<!--<modification>install.xml</modification>-->
-		<modification>language.xml</modification>
 		<require-file name="ILA.subs.php" destination="SUBSDIR">ILA Main program</require-file>
 		<require-file name="ILA.integration.php" destination="SOURCEDIR">ILA Integration functions</require-file>
-		<require-file name="ila.css" destination="THEMEDIR/css">ILA CSS file</require-file>
+		<require-file name="ILA.css" destination="THEMEDIR/css">ILA CSS file</require-file>
+		<require-file name="ILA.english.php" destination="LANGUAGEDIR/english">ILA language strings</require-file>
 		<hook hook="integrate_bbc_codes" file="SOURCEDIR/ILA.integration.php" function="ila_bbc_add_code"/>
 		<hook hook="integrate_sa_modify_modifications" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_sa_modify_modifications"/>
 		<hook hook="integrate_admin_areas" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_admin_areas"/>
@@ -35,19 +35,19 @@
 		<redirect url="index.php?action=admin;area=addonsettings;sa=ila" timeout="5000">redirect.txt</redirect>
 	</install>
 
-	<uninstall for="1.0 RC2 - 1.0.99">
+	<uninstall for="1.0 - 1.0.99">
 		<!--<modification reverse="true">install.xml</modification>-->
-		<modification reverse="true">language.xml</modification>
-		<hook reverse="true" hook="integrate_bbc_codes" file="SOURCEDIR/ILA_integration.php" function="ila_bbc_add_code"/>
-		<hook reverse="true" hook="integrate_sa_modify_modifications" file="SOURCEDIR/ILA.integration.php" function="ila_sa_integrate_modify_modifications"/>
+		<hook reverse="true" hook="integrate_bbc_codes" file="SOURCEDIR/ILA.integration.php" function="ila_bbc_add_code"/>
+		<hook reverse="true" hook="integrate_sa_modify_modifications" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_sa_modify_modifications"/>
 		<hook reverse="true" hook="integrate_admin_areas" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_admin_areas"/>
 		<hook reverse="true" hook="integrate_pre_include" file="SOURCEDIR/ILA.integration.php" />
 		<hook reverse="true" hook="integrate_pre_parsebbc" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_pre_parsebbc"/>
 		<hook reverse="true" hook="integrate_post_parsebbc" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_post_parsebbc"/>
 		<hook reverse="true" hook="integrate_prepare_display_context" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_prepare_display_context"/>
-		<hook reverse="true" hook="integrate_load_theme" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_load_themee"/>
+		<hook reverse="true" hook="integrate_load_theme" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_load_theme"/>
 		<remove-file name="SUBSDIR/ILA.subs.php" />
 		<remove-file name="SOURCEDIR/ILA.integration.php" />
-		<remove-file name="THEMEDIR/css/ila.css" />
+		<remove-file name="THEMEDIR/css/ILA.css" />
+		<remove-file name="LANGUAGEDIR/english/ILA.english.php" />
 	</uninstall>
 </package-info>
