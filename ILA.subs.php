@@ -111,7 +111,7 @@ class In_Line_Attachment
 	 */
 	public function ila_parse_bbc()
 	{
-		global $modSettings, $context, $txt, $attachments;
+		global $modSettings, $context, $txt, $attachments, $topic;
 
 		// Addon or BBC disabled, or comming in from areas we don't want to work on
 		if (empty($modSettings['ila_enabled']) || empty($modSettings['enableBBC']) || (isset($context['site_action']) && in_array($context['site_action'], array('boardindex', 'messageindex'))))
@@ -132,6 +132,8 @@ class In_Line_Attachment
 
 		// Can't trust the $topic global due to portals and other integration
 		list($this->_topic, $this->_board) = $this->_ila_get_topic($this->_id_msg);
+		$save_topic = !empty($topic) ? $topic : '';
+		$topic = $this->_topic;
 
 		// Lets make sure we have the attachments
 		require_once(SUBSDIR . '/Attachments.subs.php');
@@ -143,8 +145,11 @@ class In_Line_Attachment
 				$attachments = $this->ila_load_attachments();
 		}
 
-		// Get the rest of the details for the message attachments
+		// Get the rest of the details for the message attachments, this uses the global topic
 		$this->_ila_attachments_context = loadAttachmentContext($this->_id_msg);
+
+		// Put back the topic, whatever it was
+		$topic = $save_topic;
 
 		// Do we have new, not yet uploaded, attachments in either a new or a modified message (preview)?
 		if (isset($_REQUEST['ila']))
