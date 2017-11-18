@@ -32,6 +32,7 @@
 		<hook hook="integrate_post_parsebbc" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_post_parsebbc"/>
 		<hook hook="integrate_prepare_display_context" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_prepare_display_context"/>
 		<hook hook="integrate_load_theme" file="SOURCEDIR/ILA.integration.php" function="ila_integrate_load_theme"/>
+		<credits url="www.elkarte.net" license="MPL 1.1" copyright="spuds">Inline Attachments (ILA)</credits>
 		<redirect url="index.php?action=admin;area=addonsettings;sa=ila" timeout="5000">redirect.txt</redirect>
 	</install>
 
